@@ -1,0 +1,15 @@
+*~
+*.tsv
+*.xml
+*.bak
+*.000
+*.bck
+*.kicad_pcb-bak
+*.sch-bak
+*.tmp
+*-save.pro
+*-save.kicad_pcb
+fp-info-cache
+*.net
+*.dsn
+*.ses
