@@ -1,0 +1,25 @@
+default
+HSI = 16; hclk = 16
+16 16 16 16 16 16 16 16 48
+
+enable usb; 10mhz in; solve for max clock
+HCLK = 168
+168 168 168 168 42 84 84 168 48
+
+
+
+
+
+solving for max clock
+input 25 mhz. hclk 168
+168 168 168 168 42 84 84 168 84
+
+
+
+10
+M = 5 ; N = 96 ; P = 2
+AHB prescale 1
+HCLK 96
+APB1 prescale /4
+APB2 prescale / 2
+96 96 96 96 24 48 48 96 48
