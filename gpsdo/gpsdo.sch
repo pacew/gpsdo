@@ -398,31 +398,6 @@ $EndComp
 NoConn ~ 7650 2050
 NoConn ~ 7250 2250
 $Comp
-L pace:SRV05-4 U5
-U 1 1 6041ECE8
-P 8650 1950
-F 0 "U5" H 8850 1450 50  0000 C CNN
-F 1 "SRV05-4" H 8950 1350 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-23-6" H 9350 1500 50  0001 C CNN
-F 3 "http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF" H 8650 1950 50  0001 C CNN
-F 4 "C85364" H 8650 1950 50  0001 C CNN "LCSC"
-	1    8650 1950
-	1    0    0    -1  
-$EndComp
-$Comp
-L pace:GND #PWR?
-U 1 1 6042D0F1
-P 8650 2450
-F 0 "#PWR?" H 8650 2200 50  0001 C CNN
-F 1 "GND" H 8655 2277 50  0001 C CNN
-F 2 "" H 8650 2450 50  0001 C CNN
-F 3 "" H 8650 2450 50  0001 C CNN
-	1    8650 2450
-	1    0    0    -1  
-$EndComp
-NoConn ~ 9150 1850
-NoConn ~ 9150 2050
-$Comp
 L pace:100k R7
 U 1 1 60433B16
 P 9450 1550
@@ -466,18 +441,6 @@ Wire Wire Line
 Connection ~ 9450 1700
 Wire Wire Line
 	9450 1700 9450 1750
-$Comp
-L pace:74AHC1G04 U4
-U 1 1 60459D6C
-P 7850 4600
-F 0 "U4" H 8050 4850 50  0000 C CNN
-F 1 "74AHC1G04" H 8150 4750 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-353_SC-70-5" H 7850 4600 50  0001 C CNN
-F 3 "https://lcsc.com/product-detail/74-Series_TI_SN74AHC1G04DCKR_SN74AHC1G04DCKR_C7466.html/?href=jlc-SMT" H 7850 4600 50  0001 C CNN
-F 4 "C7466" H 7850 4600 50  0001 C CNN "LCSC"
-	1    7850 4600
-	1    0    0    -1  
-$EndComp
 $Comp
 L pace:+3.3V #PWR?
 U 1 1 60460254
@@ -780,8 +743,6 @@ Wire Wire Line
 Connection ~ 1450 7700
 Wire Wire Line
 	1450 7700 1750 7700
-Text Label 2050 3350 2    50   ~ 0
-OSC_10MHZ
 Text Label 3850 2350 0    50   ~ 0
 OSC_CONTROL
 $Comp
@@ -810,126 +771,87 @@ F 3 "~" H 5350 3000 50  0001 C CNN
 $EndComp
 Text Label 5150 3000 0    50   ~ 0
 OSC_10MHZ
-NoConn ~ 2050 3450
 $Comp
 L pace:ATGM336H-5N U2
 U 1 1 603A31FD
-P 7400 6150
-F 0 "U2" H 7350 6265 50  0000 C CNN
-F 1 "ATGM336H-5N" H 7350 6174 50  0000 C CNN
-F 2 "pace:module18_9.7x10.1mm_P1.1mm" H 7400 6150 50  0001 C CNN
-F 3 "https://lcsc.com/product-detail/Communication-Modules-GNSS-Modules_ZHONGKEWEI-ATGM336H-5N31_C90770.html/?href=jlc-SMT" H 7400 6150 50  0001 C CNN
-F 4 "C90770" H 7400 6150 50  0001 C CNN "LCSC"
-	1    7400 6150
+P 7450 5600
+F 0 "U2" H 7400 5715 50  0000 C CNN
+F 1 "ATGM336H-5N" H 7400 5624 50  0000 C CNN
+F 2 "pace:module18_9.7x10.1mm_P1.1mm" H 7450 5600 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Communication-Modules-GNSS-Modules_ZHONGKEWEI-ATGM336H-5N31_C90770.html/?href=jlc-SMT" H 7450 5600 50  0001 C CNN
+F 4 "C90770" H 7450 5600 50  0001 C CNN "LCSC"
+	1    7450 5600
 	1    0    0    -1  
 $EndComp
-Text Label 7800 6400 0    50   ~ 0
+Text Label 7850 5850 0    50   ~ 0
 SCL
-Text Label 7800 6500 0    50   ~ 0
+Text Label 7850 5950 0    50   ~ 0
 SDA
-Text Label 6900 6600 2    50   ~ 0
-GPS_1PPS
-Text Label 6900 6400 2    50   ~ 0
-GPS_TO_CPU
-Text Label 6900 6500 2    50   ~ 0
-CPU_TO_GPS
-Text Label 6900 7100 2    50   ~ 0
-GPS_nRESET
 $Comp
 L pace:47nH L1
 U 1 1 603A619E
-P 8100 6700
-F 0 "L1" H 8100 6887 60  0000 C CNB
-F 1 "47nH" H 8100 6796 40  0000 C CNN
-F 2 "Inductor_SMD:L_0603_1608Metric" H 8100 6570 40  0001 C CNN
-F 3 "https://lcsc.com/product-detail/HF-Inductors_Sunlord-SDCL1608C47NJTDF_C29683.html/?href=jlc-SMT" H 8100 6811 60  0001 C CNN
-F 4 "-" H 8100 6865 45  0001 C CNN "PART"
-F 5 "Passive" H 8330 6990 50  0001 C CNN "Family"
-F 6 "C29683" H 8100 6700 50  0001 C CNN "LCSC"
-	1    8100 6700
+P 8150 6150
+F 0 "L1" H 8150 6337 60  0000 C CNB
+F 1 "47nH" H 8150 6246 40  0000 C CNN
+F 2 "Inductor_SMD:L_0603_1608Metric" H 8150 6020 40  0001 C CNN
+F 3 "https://lcsc.com/product-detail/HF-Inductors_Sunlord-SDCL1608C47NJTDF_C29683.html/?href=jlc-SMT" H 8150 6261 60  0001 C CNN
+F 4 "-" H 8150 6315 45  0001 C CNN "PART"
+F 5 "Passive" H 8380 6440 50  0001 C CNN "Family"
+F 6 "C29683" H 8150 6150 50  0001 C CNN "LCSC"
+	1    8150 6150
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:Antenna_Shield AE1
 U 1 1 603A71E8
-P 8750 6500
-F 0 "AE1" H 8894 6539 50  0000 L CNN
-F 1 "Antenna_Shield" H 8894 6448 50  0000 L CNN
-F 2 "pace:sma" H 8750 6600 50  0001 C CNN
-F 3 "~" H 8750 6600 50  0001 C CNN
-	1    8750 6500
+P 8800 5950
+F 0 "AE1" H 8944 5989 50  0000 L CNN
+F 1 "Antenna_Shield" H 8944 5898 50  0000 L CNN
+F 2 "pace:sma" H 8800 6050 50  0001 C CNN
+F 3 "~" H 8800 6050 50  0001 C CNN
+	1    8800 5950
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7800 6700 8000 6700
+	7850 6150 8050 6150
 Wire Wire Line
-	8200 6700 8750 6700
+	8250 6150 8800 6150
 Wire Wire Line
-	8750 6700 8750 7000
+	8800 6150 8800 6450
 Wire Wire Line
-	8750 7000 7800 7000
-Connection ~ 8750 6700
+	8800 6450 7850 6450
+Connection ~ 8800 6150
 $Comp
 L pace:GND #PWR?
 U 1 1 603AC652
-P 7900 7150
-F 0 "#PWR?" H 7900 6900 50  0001 C CNN
-F 1 "GND" H 7905 6977 50  0001 C CNN
-F 2 "" H 7900 7150 50  0001 C CNN
-F 3 "" H 7900 7150 50  0001 C CNN
-	1    7900 7150
+P 7950 6600
+F 0 "#PWR?" H 7950 6350 50  0001 C CNN
+F 1 "GND" H 7955 6427 50  0001 C CNN
+F 2 "" H 7950 6600 50  0001 C CNN
+F 3 "" H 7950 6600 50  0001 C CNN
+	1    7950 6600
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7800 6900 7900 6900
+	7850 6350 7950 6350
 Wire Wire Line
-	7900 6900 7900 7100
+	7950 6350 7950 6550
 Wire Wire Line
-	7800 7100 7900 7100
-Connection ~ 7900 7100
+	7850 6550 7950 6550
+Connection ~ 7950 6550
 Wire Wire Line
-	7900 7100 7900 7150
+	7950 6550 7950 6600
 $Comp
 L pace:GND #PWR?
 U 1 1 603B02A5
-P 8850 6700
-F 0 "#PWR?" H 8850 6450 50  0001 C CNN
-F 1 "GND" H 8855 6527 50  0001 C CNN
-F 2 "" H 8850 6700 50  0001 C CNN
-F 3 "" H 8850 6700 50  0001 C CNN
-	1    8850 6700
+P 8900 6150
+F 0 "#PWR?" H 8900 5900 50  0001 C CNN
+F 1 "GND" H 8905 5977 50  0001 C CNN
+F 2 "" H 8900 6150 50  0001 C CNN
+F 3 "" H 8900 6150 50  0001 C CNN
+	1    8900 6150
 	1    0    0    -1  
 $EndComp
-$Comp
-L pace:GND #PWR?
-U 1 1 603B18C5
-P 6200 7150
-F 0 "#PWR?" H 6200 6900 50  0001 C CNN
-F 1 "GND" H 6205 6977 50  0001 C CNN
-F 2 "" H 6200 7150 50  0001 C CNN
-F 3 "" H 6200 7150 50  0001 C CNN
-	1    6200 7150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	6900 6300 6200 6300
-Wire Wire Line
-	6200 6300 6200 7150
-$Comp
-L pace:+3.3V #PWR?
-U 1 1 603B37C0
-P 6050 6200
-F 0 "#PWR?" H 6050 6050 50  0001 C CNN
-F 1 "+3.3V" H 6065 6373 50  0000 C CNN
-F 2 "" H 6050 6200 50  0001 C CNN
-F 3 "" H 6050 6200 50  0001 C CNN
-	1    6050 6200
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	6900 7000 6050 7000
-Wire Wire Line
-	6050 7000 6050 6200
 Text Label 3850 3150 0    50   ~ 0
 USB_DP
 Text Label 3850 3050 0    50   ~ 0
@@ -937,35 +859,35 @@ USB_DM
 $Comp
 L pace:100n C15
 U 1 1 603C0EC4
-P 9950 6650
-F 0 "C15" H 10042 6696 50  0000 L CNN
-F 1 "100n" H 10042 6605 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0402_1005Metric" H 9950 6650 50  0001 C CNN
-F 3 "https://datasheet.lcsc.com/szlcsc/Samsung-Electro-Mechanics-CL05B104KO5NNNC_C1525.pdf" H 9950 6650 50  0001 C CNN
-F 4 "C1525" H 9950 6650 50  0001 C CNN "LCSC"
-	1    9950 6650
+P 10000 6100
+F 0 "C15" H 10092 6146 50  0000 L CNN
+F 1 "100n" H 10092 6055 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 10000 6100 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Samsung-Electro-Mechanics-CL05B104KO5NNNC_C1525.pdf" H 10000 6100 50  0001 C CNN
+F 4 "C1525" H 10000 6100 50  0001 C CNN "LCSC"
+	1    10000 6100
 	1    0    0    -1  
 $EndComp
 $Comp
 L pace:+3.3V #PWR?
 U 1 1 603C0ECA
-P 9950 6550
-F 0 "#PWR?" H 9950 6400 50  0001 C CNN
-F 1 "+3.3V" H 9965 6723 50  0000 C CNN
-F 2 "" H 9950 6550 50  0001 C CNN
-F 3 "" H 9950 6550 50  0001 C CNN
-	1    9950 6550
+P 10000 6000
+F 0 "#PWR?" H 10000 5850 50  0001 C CNN
+F 1 "+3.3V" H 10015 6173 50  0000 C CNN
+F 2 "" H 10000 6000 50  0001 C CNN
+F 3 "" H 10000 6000 50  0001 C CNN
+	1    10000 6000
 	1    0    0    -1  
 $EndComp
 $Comp
 L pace:GND #PWR?
 U 1 1 603C0ED0
-P 9950 6750
-F 0 "#PWR?" H 9950 6500 50  0001 C CNN
-F 1 "GND" H 9955 6577 50  0001 C CNN
-F 2 "" H 9950 6750 50  0001 C CNN
-F 3 "" H 9950 6750 50  0001 C CNN
-	1    9950 6750
+P 10000 6200
+F 0 "#PWR?" H 10000 5950 50  0001 C CNN
+F 1 "GND" H 10005 6027 50  0001 C CNN
+F 2 "" H 10000 6200 50  0001 C CNN
+F 3 "" H 10000 6200 50  0001 C CNN
+	1    10000 6200
 	1    0    0    -1  
 $EndComp
 Text Label 1150 1850 0    50   ~ 0
@@ -979,7 +901,7 @@ L pace:GND #PWR?
 U 1 1 603FA215
 P 550 2400
 F 0 "#PWR?" H 550 2150 50  0001 C CNN
-F 1 "GND" H 555 2227 50  0000 C CNN
+F 1 "GND" H 555 2227 50  0001 C CNN
 F 2 "" H 550 2400 50  0001 C CNN
 F 3 "" H 550 2400 50  0001 C CNN
 	1    550  2400
@@ -1053,18 +975,6 @@ BOOT0
 Text Label 2050 1950 2    50   ~ 0
 nRESET
 $Comp
-L pace:ledgreen D1
-U 1 1 6040D888
-P 5350 4500
-F 0 "D1" V 5396 4430 50  0000 R CNN
-F 1 "ledgreen" V 5305 4430 50  0000 R CNN
-F 2 "LED_SMD:LED_0603_1608Metric" V 5350 4500 50  0001 C CNN
-F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Green-0805-Iv-207-249-mcd-atIF-20mA_C2297.html/?href=jlc-SMT" V 5350 4500 50  0001 C CNN
-F 4 "C2297" H 5350 4500 50  0001 C CNN "LCSC"
-	1    5350 4500
-	0    -1   -1   0   
-$EndComp
-$Comp
 L pace:10k R5
 U 1 1 6040EA76
 P 5350 4300
@@ -1089,11 +999,9 @@ F 3 "" H 5350 4600 50  0001 C CNN
 	1    5350 4600
 	1    0    0    -1  
 $EndComp
-Text Label 2050 4550 2    50   ~ 0
+Text Label 3850 2750 0    50   ~ 0
 OSC_10MHZ
-Text Label 3850 2550 0    50   ~ 0
-OSC_10MHZ
-Text Label 2050 4750 2    50   ~ 0
+Text Label 3850 2950 0    50   ~ 0
 GPS_1PPS
 Text Label 3850 2650 0    50   ~ 0
 GPS_1PPS
@@ -1110,74 +1018,18 @@ F 3 "~" H 5350 3200 50  0001 C CNN
 	1    5150 3200
 	0    -1   -1   0   
 $EndComp
-Text Label 3850 2850 0    50   ~ 0
-VUSB_SENSE
 Text Label 3850 4750 0    50   ~ 0
 GPS_TO_CPU
 Text Label 3850 4650 0    50   ~ 0
 CPU_TO_GPS
 Wire Wire Line
-	7650 1850 8150 1850
-Wire Wire Line
-	7650 1950 8150 1950
-Wire Wire Line
-	8150 1950 8150 2050
-Wire Wire Line
 	7650 1650 8100 1650
 Wire Wire Line
 	8100 1650 8100 1450
-Wire Wire Line
-	8100 1450 8650 1450
-Connection ~ 8650 1450
-Wire Wire Line
-	8650 1450 9450 1450
 Text Label 3850 4450 0    50   ~ 0
 SCL
 Text Label 3850 4350 0    50   ~ 0
 SDA
-$Comp
-L Connector:Conn_01x04_Male J3
-U 1 1 6045D55A
-P 6150 5200
-F 0 "J3" H 6122 5128 50  0000 R CNN
-F 1 "Conn_01x04_Male" H 6122 5173 50  0001 R CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 6150 5200 50  0001 C CNN
-F 3 "~" H 6150 5200 50  0001 C CNN
-	1    6150 5200
-	-1   0    0    1   
-$EndComp
-Text Label 5950 5000 2    50   ~ 0
-SDA
-Text Label 5950 5100 2    50   ~ 0
-SCL
-$Comp
-L pace:+3.3V #PWR?
-U 1 1 6045F0EE
-P 5600 5050
-F 0 "#PWR?" H 5600 4900 50  0001 C CNN
-F 1 "+3.3V" H 5615 5223 50  0000 C CNN
-F 2 "" H 5600 5050 50  0001 C CNN
-F 3 "" H 5600 5050 50  0001 C CNN
-	1    5600 5050
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5600 5050 5600 5200
-Wire Wire Line
-	5600 5200 5950 5200
-$Comp
-L pace:GND #PWR?
-U 1 1 604637B9
-P 5600 5300
-F 0 "#PWR?" H 5600 5050 50  0001 C CNN
-F 1 "GND" H 5605 5127 50  0001 C CNN
-F 2 "" H 5600 5300 50  0001 C CNN
-F 3 "" H 5600 5300 50  0001 C CNN
-	1    5600 5300
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5600 5300 5950 5300
 $Comp
 L pace:100n C10
 U 1 1 60475B22
@@ -1391,46 +1243,7 @@ Text Notes 5000 900  0    50   ~ 0
 5..12v
 Text Notes 7550 400  0    50   ~ 0
 Max input 15v
-Text Label 6900 6700 2    50   ~ 0
-GPS_ONOFF
-NoConn ~ 6900 6800
-$Comp
-L Connector:Conn_01x06_Male J6
-U 1 1 604F4B30
-P 5200 6150
-F 0 "J6" H 5172 6078 50  0000 R CNN
-F 1 "Conn_01x06_Male" H 5172 6123 50  0001 R CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical" H 5200 6150 50  0001 C CNN
-F 3 "~" H 5200 6150 50  0001 C CNN
-	1    5200 6150
-	-1   0    0    1   
-$EndComp
-NoConn ~ 5000 6250
-NoConn ~ 5000 6150
-NoConn ~ 5000 5850
-$Comp
-L pace:GND #PWR?
-U 1 1 604FD632
-P 4900 6400
-F 0 "#PWR?" H 4900 6150 50  0001 C CNN
-F 1 "GND" H 4905 6227 50  0000 C CNN
-F 2 "" H 4900 6400 50  0001 C CNN
-F 3 "" H 4900 6400 50  0001 C CNN
-	1    4900 6400
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4900 6400 4900 6350
-Wire Wire Line
-	4900 6350 5000 6350
-Text Label 5000 6050 2    50   ~ 0
-AUX_TO_CPU
-Text Label 5000 5950 2    50   ~ 0
-CPU_TO_AUX
-Text Label 3850 5950 0    50   ~ 0
-CPU_TO_AUX
-Text Label 3850 6050 0    50   ~ 0
-AUX_TO_CPU
+NoConn ~ 6950 6250
 Text Label 3850 3650 0    50   ~ 0
 GPS_ONOFF
 Text Label 3850 3750 0    50   ~ 0
@@ -1465,17 +1278,12 @@ $EndComp
 Connection ~ 7300 800 
 Wire Wire Line
 	7300 800  7450 800 
-Text Label 3850 3850 0    50   ~ 0
+Text Label 3850 2250 0    50   ~ 0
 LED_STATUS
 NoConn ~ 3850 1950
 NoConn ~ 3850 2050
-NoConn ~ 3850 2150
-NoConn ~ 3850 2250
 NoConn ~ 3850 2450
-NoConn ~ 3850 2750
-NoConn ~ 3850 2950
 NoConn ~ 3850 3450
-NoConn ~ 3850 4050
 NoConn ~ 3850 4150
 NoConn ~ 3850 4250
 NoConn ~ 3850 4850
@@ -1565,7 +1373,7 @@ L pace:GND #PWR?
 U 1 1 605E668F
 P 1350 3000
 F 0 "#PWR?" H 1350 2750 50  0001 C CNN
-F 1 "GND" H 1355 2827 50  0000 C CNN
+F 1 "GND" H 1355 2827 50  0001 C CNN
 F 2 "" H 1350 3000 50  0001 C CNN
 F 3 "" H 1350 3000 50  0001 C CNN
 	1    1350 3000
@@ -1576,10 +1384,408 @@ L pace:GND #PWR?
 U 1 1 605E69FA
 P 1750 3000
 F 0 "#PWR?" H 1750 2750 50  0001 C CNN
-F 1 "GND" H 1755 2827 50  0000 C CNN
+F 1 "GND" H 1755 2827 50  0001 C CNN
 F 2 "" H 1750 3000 50  0001 C CNN
 F 3 "" H 1750 3000 50  0001 C CNN
 	1    1750 3000
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	8100 1450 8650 1450
+$Comp
+L pace:SRV05-4-newfp U5
+U 1 1 603AFE8C
+P 8650 1950
+F 0 "U5" H 8650 2631 50  0000 C CNN
+F 1 "SRV05-4-newfp" H 8650 2540 50  0000 C CNN
+F 2 "pace:srv05-4" H 9350 1500 50  0001 C CNN
+F 3 "http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF" H 8650 1950 50  0001 C CNN
+F 4 "C85364" H 8650 1950 50  0001 C CNN "LCSC"
+	1    8650 1950
+	1    0    0    -1  
+$EndComp
+Connection ~ 8650 1450
+Wire Wire Line
+	8650 1450 9450 1450
+NoConn ~ 9150 2050
+$Comp
+L pace:GND #PWR?
+U 1 1 603B66C8
+P 8650 2450
+F 0 "#PWR?" H 8650 2200 50  0001 C CNN
+F 1 "GND" H 8655 2277 50  0001 C CNN
+F 2 "" H 8650 2450 50  0001 C CNN
+F 3 "" H 8650 2450 50  0001 C CNN
+	1    8650 2450
+	1    0    0    -1  
+$EndComp
+$Comp
+L pace:ledgreen_0805 D1
+U 1 1 603BB49B
+P 5350 4500
+F 0 "D1" V 5396 4430 50  0000 R CNN
+F 1 "ledgreen_0805" V 5305 4430 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" V 5350 4500 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/Light-Emitting-Diodes-LED_Green-0805-Iv-207-249-mcd-atIF-20mA_C2297.html/?href=jlc-SMT" V 5350 4500 50  0001 C CNN
+F 4 "C2297" H 5350 4500 50  0001 C CNN "LCSC"
+	1    5350 4500
+	0    -1   -1   0   
+$EndComp
+$Comp
+L pace:16mhz Y1
+U 1 1 603C2127
+P 850 3450
+F 0 "Y1" H 800 3000 50  0000 L CNN
+F 1 "16mhz" H 750 2900 50  0000 L CNN
+F 2 "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm" H 850 3450 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Yangxing-Tech-X322516MLB4SI_C13738.pdf" H 850 3450 50  0001 C CNN
+F 4 "C13738" H 850 3450 50  0001 C CNN "LCSC"
+	1    850  3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L pace:12pf C18
+U 1 1 603C2BDD
+P 600 3550
+F 0 "C18" H 550 3350 50  0000 L CNN
+F 1 "12pf" H 500 3250 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 600 3550 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Guangdong-Fenghua-Advanced-Tech-0402CG120J500NT_C1547.pdf" H 600 3550 50  0001 C CNN
+F 4 "C1547" H 600 3550 50  0001 C CNN "LCSC"
+	1    600  3550
+	1    0    0    -1  
+$EndComp
+$Comp
+L pace:12pf C19
+U 1 1 603C30A0
+P 1100 3550
+F 0 "C19" H 1050 3350 50  0000 L CNN
+F 1 "12pf" H 1050 3250 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 1100 3550 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Guangdong-Fenghua-Advanced-Tech-0402CG120J500NT_C1547.pdf" H 1100 3550 50  0001 C CNN
+F 4 "C1547" H 1100 3550 50  0001 C CNN "LCSC"
+	1    1100 3550
+	1    0    0    -1  
+$EndComp
+$Comp
+L pace:220 R9
+U 1 1 603D353F
+P 1550 3450
+F 0 "R9" V 1650 3450 50  0000 C CNN
+F 1 "220" V 1750 3450 50  0000 C CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" H 1550 3450 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Uniroyal-Elec-0402WGF1002TCE_C25744.pdf" H 1550 3450 50  0001 C CNN
+F 4 "C25091" H 1550 3450 50  0001 C CNN "LCSC"
+	1    1550 3450
+	0    1    1    0   
+$EndComp
+$Comp
+L pace:GND #PWR?
+U 1 1 603F9B37
+P 850 3650
+F 0 "#PWR?" H 850 3400 50  0001 C CNN
+F 1 "GND" H 855 3477 50  0001 C CNN
+F 2 "" H 850 3650 50  0001 C CNN
+F 3 "" H 850 3650 50  0001 C CNN
+	1    850  3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	600  3650 850  3650
+Connection ~ 850  3650
+Wire Wire Line
+	850  3650 1000 3650
+Wire Wire Line
+	1000 3350 1000 3650
+Connection ~ 1000 3650
+Wire Wire Line
+	1000 3650 1100 3650
+Wire Wire Line
+	600  3450 750  3450
+Wire Wire Line
+	950  3450 1100 3450
+Connection ~ 1100 3450
+Wire Wire Line
+	1100 3450 1450 3450
+Wire Wire Line
+	1650 3450 2050 3450
+Wire Wire Line
+	850  3350 1000 3350
+Wire Wire Line
+	600  3450 600  3250
+Wire Wire Line
+	600  3250 1550 3250
+Wire Wire Line
+	1550 3250 1550 3350
+Wire Wire Line
+	1550 3350 2050 3350
+Connection ~ 600  3450
+$Comp
+L pace:74AHC1G04-newfp U4
+U 1 1 60436274
+P 7850 4600
+F 0 "U4" H 7600 4850 50  0000 C CNN
+F 1 "74AHC1G04-newfp" H 7900 4950 50  0000 C CNN
+F 2 "pace:SOT-70-dck" H 7850 4600 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/74-Series_TI_SN74AHC1G04DCKR_SN74AHC1G04DCKR_C7466.html/?href=jlc-SMT" H 7850 4600 50  0001 C CNN
+F 4 "C7466" H 7850 4600 50  0001 C CNN "LCSC"
+	1    7850 4600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	850  3550 850  3650
+NoConn ~ 3850 5950
+NoConn ~ 3850 6050
+Text Notes 8000 7000 0    50   ~ 0
+use JLC7628 ; 50 ohm trace = 11.55 mil
+$Comp
+L Device:Antenna_Shield AE4
+U 1 1 6047E78D
+P 4550 7650
+F 0 "AE4" V 4694 7689 50  0000 L CNN
+F 1 "Antenna_Shield" H 4694 7598 50  0001 L CNN
+F 2 "pace:sma" H 4550 7750 50  0001 C CNN
+F 3 "~" H 4550 7750 50  0001 C CNN
+	1    4550 7650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:Antenna_Shield AE5
+U 1 1 604803BE
+P 4550 7900
+F 0 "AE5" V 4694 7939 50  0000 L CNN
+F 1 "Antenna_Shield" H 4694 7848 50  0001 L CNN
+F 2 "pace:sma" H 4550 8000 50  0001 C CNN
+F 3 "~" H 4550 8000 50  0001 C CNN
+	1    4550 7900
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:Antenna_Shield AE3
+U 1 1 604914DA
+P 4550 7400
+F 0 "AE3" V 4694 7439 50  0000 L CNN
+F 1 "Antenna_Shield" H 4694 7348 50  0001 L CNN
+F 2 "pace:sma" H 4550 7500 50  0001 C CNN
+F 3 "~" H 4550 7500 50  0001 C CNN
+	1    4550 7400
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:Antenna_Shield AE2
+U 1 1 60491896
+P 4550 7150
+F 0 "AE2" V 4694 7189 50  0000 L CNN
+F 1 "Antenna_Shield" H 4694 7098 50  0001 L CNN
+F 2 "pace:sma" H 4550 7250 50  0001 C CNN
+F 3 "~" H 4550 7250 50  0001 C CNN
+	1    4550 7150
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:Antenna_Shield AE6
+U 1 1 60491C47
+P 5150 7150
+F 0 "AE6" V 5294 7189 50  0000 L CNN
+F 1 "Antenna_Shield" H 5294 7098 50  0001 L CNN
+F 2 "pace:sma" H 5150 7250 50  0001 C CNN
+F 3 "~" H 5150 7250 50  0001 C CNN
+	1    5150 7150
+	0    1    -1   0   
+$EndComp
+$Comp
+L Device:Antenna_Shield AE7
+U 1 1 60492689
+P 5150 7400
+F 0 "AE7" V 5294 7439 50  0000 L CNN
+F 1 "Antenna_Shield" H 5294 7348 50  0001 L CNN
+F 2 "pace:sma" H 5150 7500 50  0001 C CNN
+F 3 "~" H 5150 7500 50  0001 C CNN
+	1    5150 7400
+	0    1    -1   0   
+$EndComp
+$Comp
+L Device:Antenna_Shield AE8
+U 1 1 60492A83
+P 5150 7650
+F 0 "AE8" V 5294 7689 50  0000 L CNN
+F 1 "Antenna_Shield" H 5294 7598 50  0001 L CNN
+F 2 "pace:sma" H 5150 7750 50  0001 C CNN
+F 3 "~" H 5150 7750 50  0001 C CNN
+	1    5150 7650
+	0    1    -1   0   
+$EndComp
+$Comp
+L Device:Antenna_Shield AE9
+U 1 1 60492EE8
+P 5150 7900
+F 0 "AE9" V 5294 7939 50  0000 L CNN
+F 1 "Antenna_Shield" H 5294 7848 50  0001 L CNN
+F 2 "pace:sma" H 5150 8000 50  0001 C CNN
+F 3 "~" H 5150 8000 50  0001 C CNN
+	1    5150 7900
+	0    1    -1   0   
+$EndComp
+Wire Wire Line
+	4750 7150 4950 7150
+Wire Wire Line
+	4750 7400 4950 7400
+Wire Wire Line
+	4750 7650 4950 7650
+Wire Wire Line
+	4750 7900 4950 7900
+Wire Wire Line
+	4750 7800 4850 7800
+Wire Wire Line
+	4750 7550 4850 7550
+Wire Wire Line
+	4750 7300 4850 7300
+Wire Wire Line
+	4750 7050 4850 7050
+$Comp
+L pace:GND #PWR?
+U 1 1 604B868B
+P 4850 8000
+F 0 "#PWR?" H 4850 7750 50  0001 C CNN
+F 1 "GND" H 4855 7827 50  0001 C CNN
+F 2 "" H 4850 8000 50  0001 C CNN
+F 3 "" H 4850 8000 50  0001 C CNN
+	1    4850 8000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4850 8000 4850 7800
+Connection ~ 4850 7800
+Wire Wire Line
+	4850 7800 4950 7800
+Wire Wire Line
+	4850 7800 4850 7550
+Connection ~ 4850 7550
+Wire Wire Line
+	4850 7550 4950 7550
+Wire Wire Line
+	4850 7550 4850 7300
+Connection ~ 4850 7300
+Wire Wire Line
+	4850 7300 4950 7300
+Wire Wire Line
+	4850 7300 4850 7050
+Connection ~ 4850 7050
+Wire Wire Line
+	4850 7050 4950 7050
+$Comp
+L pace:+3.3V #PWR?
+U 1 1 603B37C0
+P 6100 5650
+F 0 "#PWR?" H 6100 5500 50  0001 C CNN
+F 1 "+3.3V" H 6115 5823 50  0000 C CNN
+F 2 "" H 6100 5650 50  0001 C CNN
+F 3 "" H 6100 5650 50  0001 C CNN
+	1    6100 5650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6100 6450 6100 5650
+Wire Wire Line
+	6950 6450 6100 6450
+$Comp
+L pace:GND #PWR?
+U 1 1 603B18C5
+P 6250 6600
+F 0 "#PWR?" H 6250 6350 50  0001 C CNN
+F 1 "GND" H 6255 6427 50  0001 C CNN
+F 2 "" H 6250 6600 50  0001 C CNN
+F 3 "" H 6250 6600 50  0001 C CNN
+	1    6250 6600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6250 5750 6250 6600
+Wire Wire Line
+	6950 5750 6250 5750
+Text Label 6950 6550 2    50   ~ 0
+GPS_nRESET
+Text Label 6950 6150 2    50   ~ 0
+GPS_ONOFF
+Text Label 6950 6050 2    50   ~ 0
+GPS_1PPS
+Text Label 6950 5950 2    50   ~ 0
+CPU_TO_GPS
+Text Label 6950 5850 2    50   ~ 0
+GPS_TO_CPU
+$Comp
+L pace:PWR_FLAG #FLG?
+U 1 1 6057373B
+P 4950 7150
+F 0 "#FLG?" H 4950 7225 50  0001 C CNN
+F 1 "PWR_FLAG" H 4950 7323 50  0001 C CNN
+F 2 "" H 4950 7150 50  0001 C CNN
+F 3 "~" H 4950 7150 50  0001 C CNN
+	1    4950 7150
+	1    0    0    -1  
+$EndComp
+Connection ~ 4950 7150
+$Comp
+L pace:PWR_FLAG #FLG?
+U 1 1 605798BE
+P 4950 7400
+F 0 "#FLG?" H 4950 7475 50  0001 C CNN
+F 1 "PWR_FLAG" H 4950 7573 50  0001 C CNN
+F 2 "" H 4950 7400 50  0001 C CNN
+F 3 "~" H 4950 7400 50  0001 C CNN
+	1    4950 7400
+	1    0    0    -1  
+$EndComp
+Connection ~ 4950 7400
+$Comp
+L pace:PWR_FLAG #FLG?
+U 1 1 60579C58
+P 4950 7650
+F 0 "#FLG?" H 4950 7725 50  0001 C CNN
+F 1 "PWR_FLAG" H 4950 7823 50  0001 C CNN
+F 2 "" H 4950 7650 50  0001 C CNN
+F 3 "~" H 4950 7650 50  0001 C CNN
+	1    4950 7650
+	1    0    0    -1  
+$EndComp
+Connection ~ 4950 7650
+$Comp
+L pace:PWR_FLAG #FLG?
+U 1 1 6057A3E6
+P 4950 7900
+F 0 "#FLG?" H 4950 7975 50  0001 C CNN
+F 1 "PWR_FLAG" H 4950 8073 50  0001 C CNN
+F 2 "" H 4950 7900 50  0001 C CNN
+F 3 "~" H 4950 7900 50  0001 C CNN
+	1    4950 7900
+	1    0    0    -1  
+$EndComp
+Connection ~ 4950 7900
+Wire Wire Line
+	7650 1850 8000 1850
+Wire Wire Line
+	8000 1850 8000 2050
+Wire Wire Line
+	8000 2050 8150 2050
+Wire Wire Line
+	7650 1950 7850 1950
+Wire Wire Line
+	7850 1950 7850 2650
+Wire Wire Line
+	7850 2650 9250 2650
+Wire Wire Line
+	9250 2650 9250 1850
+Wire Wire Line
+	9250 1850 9150 1850
+NoConn ~ 8150 1850
+Text Label 3850 4050 0    50   ~ 0
+OSC_10MHZ
+NoConn ~ 3850 2550
+NoConn ~ 3850 3850
+NoConn ~ 2050 4750
+Text Label 3850 2850 0    50   ~ 0
+VUSB_SENSE
+NoConn ~ 2050 4550
+Text Label 3850 2150 0    50   ~ 0
+BOARD_TEMP
 $EndSCHEMATC
