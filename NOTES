@@ -1,3 +1,13 @@
+inverting missing lcsc part
+esd protection for usb missing lcsc part
+compare load crystal
+polarity of main diode and led
+gps chip
+
+
+
+
+
 default
 HSI = 16; hclk = 16
 16 16 16 16 16 16 16 16 48
