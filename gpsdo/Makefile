@@ -32,5 +32,5 @@ $(ZIP): $(GERBS)
 PDIR=~/.pyenv/versions/3.7.8/bin
 #GEN=~/JLCKicadTools/jlc_kicad_tools/generate_jlc_files.py
 $(BOM): $(ZIP)
-	$(PDIR)/jlc-kicad-tools .
+	$(PDIR)/jlc-kicad-tools -d $(HOME)/pace-kicad/rotations.csv .
 	ls -l $(BOM)
