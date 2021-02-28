@@ -13,3 +13,5 @@ fp-info-cache
 *.net
 *.dsn
 *.ses
+*.gbr
+*.drl
