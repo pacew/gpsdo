@@ -30,6 +30,8 @@ $(ZIP): $(GERBS)
 	ls -l $(ZIP)
 
 PDIR=~/.pyenv/versions/3.7.8/bin
-$(BOM): $(ZIP)
-	$(PDIR)/jlc-kicad-tools .
+GEN=~/JLCKicadTools/jlc_kicad_tools/generate_jlc_files.py
+$(BOM): $(ZIP) $(GEN)
+#$(PDIR)/jlc-kicad-tools .
+	python3 $(GEN) .
 	ls -l $(BOM)
