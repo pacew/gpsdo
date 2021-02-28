@@ -367,17 +367,6 @@ F 3 "" H 8200 1100 50  0001 C CNN
 	1    8200 1100
 	1    0    0    -1  
 $EndComp
-$Comp
-L pace:USB_B_Micro J4
-U 1 1 60403348
-P 7350 1850
-F 0 "J4" H 7407 2225 50  0000 C CNN
-F 1 "USB_B_Micro" H 7150 2200 50  0001 L CNN
-F 2 "Connector_USB:USB_Micro-B_Molex-105017-0001" H 7500 1800 50  0001 C CNN
-F 3 "~" H 7500 1800 50  0001 C CNN
-	1    7350 1850
-	1    0    0    -1  
-$EndComp
 Text Label 7650 1850 0    50   ~ 0
 USB_DP
 Text Label 7650 1950 0    50   ~ 0
@@ -1788,4 +1777,16 @@ VUSB_SENSE
 NoConn ~ 2050 4550
 Text Label 3850 2150 0    50   ~ 0
 BOARD_TEMP
+$Comp
+L pace:usb-micro-jlc J3
+U 1 1 603DB4F9
+P 7350 1850
+F 0 "J3" H 7407 2317 50  0000 C CNN
+F 1 "usb-micro-jlc" H 7407 2226 50  0000 C CNN
+F 2 "pace:usb-micro-jlc" H 7500 1800 50  0001 C CNN
+F 3 "https://lcsc.com/product-detail/USB-Connectors_SHOU-HAN-MicroXNJ_C404969.html/?href=jlc-SMT" H 7500 1800 50  0001 C CNN
+F 4 "C404969" H 7350 1850 50  0001 C CNN "LCSC"
+	1    7350 1850
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
