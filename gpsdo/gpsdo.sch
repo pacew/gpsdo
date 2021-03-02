@@ -1779,7 +1779,7 @@ Text Label 3850 2150 0    50   ~ 0
 BOARD_TEMP
 $Comp
 L pace:usb-micro-jlc J3
-U 1 1 603DB4F9
+U 1 1 603D62C3
 P 7350 1850
 F 0 "J3" H 7407 2317 50  0000 C CNN
 F 1 "usb-micro-jlc" H 7407 2226 50  0000 C CNN

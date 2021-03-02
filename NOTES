@@ -1,5 +1,9 @@
 connectors for extra cpu pins
 jlc switch
+make shield pins nc in usb connector
+jlc?: power jack; swd connector; other headers; pushbutton
+https://github.com/tanner87661/IoTTStick/tree/master/Hat%20Devices/BlueHat%20Signaling/BuildYourOwn
+
 
 
 
