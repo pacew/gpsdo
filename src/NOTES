@@ -1,0 +1,11 @@
+STM32F407VETx
+data sheet is stm32f405rg.pdf
+cortex m4
+
+arm-gdb
+
+target extended-remote /dev/ttyACM1
+monitor tpwr enable
+monitor swdp_scan
+attach 1
+load blink.elf
