@@ -9,3 +9,39 @@ monitor tpwr enable
 monitor swdp_scan
 attach 1
 load blink.elf
+
+================================================================
+from data sheet
+HCLK max 168 (144 if VOS = 0)
+PCLK1 = APB1 max = 42
+PCLK2 = APB2 max = 84
+pll input clock typ 0.95..2.1 typical 1
+pll out clock 24..168
+adc clock 0.6 .. 36 mhz typical 30
+================================================================
+
+
+from STM32CubeMX
+input freq 16 MHz
+PLL Source Mux HSE (instead of HSI)
+/M = 8
+* N = 168
+/ P = 2
+/ Q = 7
+System Clock Mux PLLCLK (instead of HSE or HSI)
+SYSCLK 168
+AHB Prescaler / 1
+HCLK 168
+/ 1 to cortex system timer
+APB1 Prescaler / 4 -> PCLK1 = 42
+  APB1 peripheral clocks 42
+  APB1 Timer clocks 84
+APB2 Prescaler / 2 -> PCLK2 84
+  APB2 peripheral clocks 84
+  APB2 timer clocks 168
+
+48 MHz clocks = 48
+
+
+adcpre = divide by 4 yielding 84/4 = 21 MHz adc clock
+

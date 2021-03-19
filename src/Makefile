@@ -17,7 +17,8 @@ ARM_LIBS = -lgcc
 .S.armo:
 	$(ARM_CC) $(ARM_CFLAGS) -c -x assembler-with-cpp -o $*.armo $*.S
 
-PROG = blink
+#PROG = blink
+PROG = start_f407
 
 all: $(PROG).elf
 
@@ -30,30 +31,12 @@ blink.elf: $(BLINK_OBJS) Makefile ldscript
 	$(ARM_CC) $(ARM_CFLAGS) -o blink.elf $(BLINK_OBJS) $(ARM_LIBS)
 	$(ARM_PREFIX)-size blink.elf
 
-UART_OBJS = vectors.armo uart.armo printf.armo
-$(UART_OBJS): regs.h
-uart.elf: $(UART_OBJS) Makefile ldscript
-	$(ARM_CC) $(ARM_CFLAGS) -o uart.elf $(UART_OBJS) $(ARM_LIBS)
-	$(ARM_PREFIX)-size uart.elf
+START_F407_OBJS = vectors.armo start_f407.armo
+$(START_F407_OBJS): regs.h
+start_f407.elf: $(START_F407_OBJS) Makefile ldscript
+	$(ARM_CC) $(ARM_CFLAGS) -o start_f407.elf $(START_F407_OBJS) $(ARM_LIBS)
+	$(ARM_PREFIX)-size start_f407.elf
 
-TUSB_OBJS = tusb.armo
-USB_OBJS = vectors.armo usb.armo printf.armo $(TUSB_OBJS)
-$(USB_OBJS): regs.h
-usb.elf: $(USB_OBJS) Makefile ldscript
-	$(ARM_CC) $(ARM_CFLAGS) -o usb.elf $(USB_OBJS) $(ARM_LIBS)
-	$(ARM_PREFIX)-size usb.elf
-
-tusb.armo: ../tinyusb/src/tusb.c
-	$(ARM_CC) $(ARM_CFLAGS) -c ../tinyusb/src/tusb.c
-
-
-
-.PHONY: upload
-upload: $(PROG).elf
-	./upload $(PROG).elf || (cat openocd.log; false)
-
-dis:
-	$(ARM_OBJDUMP) --disassemble $(PROG).elf
 
 clean:
 	rm -f *.armo $(PROG).elf regs.h vectors.S
