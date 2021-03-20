@@ -1,5 +1,110 @@
 #include "regs.h"
 
+double hclk_hz = 16e6;
+double apb1_hz = 4e6;
+double apb2_hz = 8e6;
+
+
+/* from ARMv7-m Architecture Reference Manual c1.7.2 ITM register summary */
+#define ITM_STIM0 (*(unsigned char volatile *)0xE0000000)
+#define ITM_TCR (*(unsigned int volatile *)0xE0000E80)
+#define ITM_TER0 (*(unsigned int volatile *)0xE0000E00)
+#define ITM_LAR (*(unsigned int volatile *)0xE0000FB0)
+
+/* from ARMv7-m Architecture Reference Manual c1.10.1 TPIO register summary */
+#define TPIU_SSPSR (*(unsigned int volatile *)0xE0040000)
+#define TPIU_CSPSR (*(unsigned int volatile *)0xE0040004)
+#define TPIU_ACPR (*(unsigned int volatile *) 0xE0040010)
+#define TPIU_SPPR (*(unsigned int volatile *) 0xE00400f0)
+#define TPIU_TYPE (*(unsigned int volatile *) 0xE0040fc8)
+
+/* https://community.atmel.com/forum/how-display-itm-based-output-atmel-studio-arduino-due-j-link */
+
+void
+setup_swo (void)
+{
+	/* Chapter DBG Section ITM */
+	/* Configure the TPIU and assign TRACE I/Os by configuring the
+	   DBGMCU_CR (refer to Section 38.17.2 and Section 38.16.3) */
+	union {
+		struct {
+			int dbg_sleep : 1;
+			int dbg_stop : 1;
+			int dbg_standby : 1;
+			int : 2;
+			int trace_ioen : 1;
+			int trace_mode : 2;
+		} bits;
+		unsigned int word;
+	} dbg_dbgmcu_cr;
+			
+	dbg_dbgmcu_cr.word = DBG_DBGMCU_CR;
+	dbg_dbgmcu_cr.bits.trace_ioen = 1;
+	dbg_dbgmcu_cr.bits.trace_mode = 0;
+	DBG_DBGMCU_CR = dbg_dbgmcu_cr.word;
+		
+
+	/* Write 0xC5ACCE55 to the ITM Lock Access register to unlock
+	   the write access to the ITM registers */
+	ITM_LAR = 0xC5ACCE55;
+
+	/* Write 0x00010005 to the ITM Trace Control register to
+	   enable the ITM with Sync enabled and an ATB ID different
+	   from 0x00 */
+
+	/*
+	  • Write 0x1 to the ITM Trace Enable register to enable the
+            Stimulus Port 0
+
+	  • Write 0x1 to the ITM Trace Privilege register to unmask
+            stimulus ports 7:0
+
+	  • Write the value to output in the Stimulus Port register 0:
+	  this can be done by software (using a printf function)
+	*/
+
+	double swo_clock = 2e6;
+	
+	int swoscaler = (hclk_hz / swo_clock) - 1;
+	TPIU_ACPR = swoscaler;
+	TPIU_SPPR = 2; // async NRZ
+
+	/* C1.7.6 Trace Control Register, ITM_TCR */
+	union {
+		struct {
+			int itmena : 1;
+			int tsena : 1;
+			int syncena : 1;
+			int txena : 1;
+			int swoena : 1;
+			int : 1;
+			int tsprescale : 2;
+			int : 4;
+			int tracebusid : 7;
+			int busy : 1;
+			int : 8;
+		} bits;
+		unsigned int word;
+	} itm_tcr;
+	itm_tcr.word = ITM_TCR;
+	itm_tcr.bits.tracebusid = 1;
+	itm_tcr.bits.syncena = 1;
+	itm_tcr.bits.itmena = 1;
+	ITM_TCR = itm_tcr.word;
+		
+	ITM_TER0 |= 0xff; /* enable stimulus ports */
+	
+}
+	  
+void
+swo_putc (int c)
+{
+	while ((ITM_STIM0 & 1) == 0)
+		;
+	ITM_STIM0 = c;
+}
+
+
 void
 small_delay()
 {
@@ -18,7 +123,7 @@ small_delay()
  * "start", defined here.
  */
 void
-start ()
+start (void)
 {
 	/* LED_STATUS PA3 */
 	RCC_AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
@@ -36,15 +141,11 @@ start ()
 }
 
 void
-intr_unhandled ()
+intr_unhandled (void)
 {
 	while(1)
 		;
 }
-
-double hclk_hz = 16e6;
-double apb1_hz = 4e6;
-double apb2_hz = 8e6;
 
 /* see DDI0489B_cortex_m7_trm.pdf and DDI0403E_B_armv7m_arm.pdf */
 #define SYST_CSR (*(unsigned int volatile *)0xE000E010)

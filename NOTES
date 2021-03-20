@@ -1,3 +1,5 @@
+variable filter for osc control
+
 connectors for extra cpu pins
 jlc switch
 make shield pins nc in usb connector
