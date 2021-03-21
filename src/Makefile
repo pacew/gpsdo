@@ -37,6 +37,9 @@ start_f407.elf: $(START_F407_OBJS) Makefile ldscript
 	$(ARM_CC) $(ARM_CFLAGS) -o start_f407.elf $(START_F407_OBJS) $(ARM_LIBS)
 	$(ARM_PREFIX)-size start_f407.elf
 
+.PHONY: load
+load: all
+	./load $(PROG).elf
 
 clean:
 	rm -f *.armo $(PROG).elf regs.h vectors.S
