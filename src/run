@@ -1,0 +1,22 @@
+#! /bin/bash
+
+if [ $# != 1 ]
+then
+    echo "usage: load elf"
+    exit 1
+fi
+
+file=$1
+
+cat > TMP.gdb <<EOF
+target extended-remote /dev/ttyBmpGdb
+monitor swdp_scan
+attach 1
+monitor traceswo 2250000 decode
+load $file
+run
+EOF
+
+
+arm-gdb -n --batch -x TMP.gdb $file
+
