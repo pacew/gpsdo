@@ -74,10 +74,11 @@ setup_swo (void)
 	*/
 
 	double swo_clock = 2.25e6;
+	swo_clock = 9600;
 	
 	int swoscaler = (hclk_hz / swo_clock) - 1;
 	TPIU_ACPR = swoscaler;
-	TPIU_SPPR = 2; // async NRZ
+	TPIU_SPPR = 1; // 2 = async NRZ; 1 = manchester
 
 	TPIU_CSPSR = 1; // port size 1 bit
 	
@@ -154,7 +155,7 @@ blinker (void)
 		small_delay();
 
 		c++;
-		swo_putc ('x');
+		swo_putc ('C');
 	}
 }
 
