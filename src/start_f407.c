@@ -4,25 +4,34 @@ double hclk_hz = 16e6;
 double apb1_hz = 4e6;
 double apb2_hz = 8e6;
 
+void small_delay(void);
+
 
 /* from ARMv7-m Architecture Reference Manual c1.7.2 ITM register summary */
 #define ITM_STIM0 (*(unsigned char volatile *)0xE0000000)
 #define ITM_TCR (*(unsigned int volatile *)0xE0000E80)
 #define ITM_TER0 (*(unsigned int volatile *)0xE0000E00)
+#define ITM_TPR (*(unsigned int volatile *)0xE0000E40)
 #define ITM_LAR (*(unsigned int volatile *)0xE0000FB0)
 
 /* from ARMv7-m Architecture Reference Manual c1.10.1 TPIO register summary */
 #define TPIU_SSPSR (*(unsigned int volatile *)0xE0040000)
-#define TPIU_CSPSR (*(unsigned int volatile *)0xE0040004)
-#define TPIU_ACPR (*(unsigned int volatile *) 0xE0040010)
-#define TPIU_SPPR (*(unsigned int volatile *) 0xE00400f0)
+#define TPIU_CSPSR (*(unsigned int volatile *)0xE0040004) // current port size
+#define TPIU_ACPR (*(unsigned int volatile *) 0xE0040010) // async clock prescl
+#define TPIU_SPPR (*(unsigned int volatile *) 0xE00400f0) // selected pin protocol
+#define TPIU_FORMATTER (*(unsigned int volatile *)0xe0040304)
 #define TPIU_TYPE (*(unsigned int volatile *) 0xE0040fc8)
+
+/* from ARM ® Cortex ® -M4 Processor technical reference manual  */
+#define DEMCR (*(unsigned int volatile *) 0xe000edfc)
 
 /* https://community.atmel.com/forum/how-display-itm-based-output-atmel-studio-arduino-due-j-link */
 
 void
 setup_swo (void)
 {
+	DEMCR |= (1 < 24); // TRCENA
+
 	/* Chapter DBG Section ITM */
 	/* Configure the TPIU and assign TRACE I/Os by configuring the
 	   DBGMCU_CR (refer to Section 38.17.2 and Section 38.16.3) */
@@ -40,9 +49,10 @@ setup_swo (void)
 			
 	dbg_dbgmcu_cr.word = DBG_DBGMCU_CR;
 	dbg_dbgmcu_cr.bits.trace_ioen = 1;
-	dbg_dbgmcu_cr.bits.trace_mode = 0;
+	dbg_dbgmcu_cr.bits.trace_mode = 0; // async trace traceswo pb3
 	DBG_DBGMCU_CR = dbg_dbgmcu_cr.word;
 		
+	small_delay();
 
 	/* Write 0xC5ACCE55 to the ITM Lock Access register to unlock
 	   the write access to the ITM registers */
@@ -63,22 +73,28 @@ setup_swo (void)
 	  this can be done by software (using a printf function)
 	*/
 
-	double swo_clock = 2e6;
+	double swo_clock = 2.25e6;
 	
 	int swoscaler = (hclk_hz / swo_clock) - 1;
 	TPIU_ACPR = swoscaler;
 	TPIU_SPPR = 2; // async NRZ
 
+	TPIU_CSPSR = 1; // port size 1 bit
+	
+	TPIU_FORMATTER = 0x100;
+
 	/* C1.7.6 Trace Control Register, ITM_TCR */
+	/* also table 308 of stm32fxx rm */
 	union {
 		struct {
 			int itmena : 1;
 			int tsena : 1;
 			int syncena : 1;
-			int txena : 1;
+			int txena : 1; // dwtena
 			int swoena : 1;
-			int : 1;
+			int : 3;
 			int tsprescale : 2;
+			int gtsfreq : 2; // unused on stm32f4xx
 			int : 4;
 			int tracebusid : 7;
 			int busy : 1;
@@ -90,9 +106,12 @@ setup_swo (void)
 	itm_tcr.bits.tracebusid = 1;
 	itm_tcr.bits.syncena = 1;
 	itm_tcr.bits.itmena = 1;
+	itm_tcr.bits.swoena = 0;
 	ITM_TCR = itm_tcr.word;
 		
-	ITM_TER0 |= 0xff; /* enable stimulus ports */
+	ITM_TPR = 0xffffffff;
+	ITM_TER0 |= 1; /* enable stimulus ports */
+
 	
 }
 	  
@@ -104,7 +123,7 @@ swo_putc (int c)
 	ITM_STIM0 = c;
 }
 
-int delay_speed = 500 * 1000;
+int delay_speed = 5000 * 1000;
 
 void
 small_delay()
@@ -126,12 +145,16 @@ blinker (void)
 
 	GPIOA_MODER = (GPIOA_MODER & ~0xc0) | 0x40; // output
 
+	int c = 0;
 	while (1) {
 		GPIOA_BSRR = (1 << 3);
 		small_delay();
 
 		GPIOA_BSRR = (1 << (3+16));
 		small_delay();
+
+		c++;
+		swo_putc ('x');
 	}
 }
 
@@ -169,6 +192,8 @@ start (void)
 		_sdata[i] = _sidata[i];
 
 
+	setup_swo ();
+	
 	blinker ();
 }
 

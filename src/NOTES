@@ -1,3 +1,10 @@
+(gdb) monitor version
+Black Magic Probe (Firmware v1.6.1-1-g74af1f5) (Hardware Version 3)
+Copyright (C) 2015  Black Sphere Technologies Ltd.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+
+
+
 STM32F407VETx
 data sheet is stm32f405rg.pdf
 cortex m4

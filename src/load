@@ -9,8 +9,9 @@ fi
 file=$1
 
 cat > TMP.gdb <<EOF
-target extended-remote /dev/serial/by-id/usb-Black_Sphere_Technologies_Black_Magic_Probe_E2E99CC0-if00
+target extended-remote /dev/ttyBmpGdb
 monitor swdp_scan
+monitor traceswo 
 attach 1
 load $file
 EOF
