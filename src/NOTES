@@ -1,3 +1,10 @@
+gps:
+CPU_TO_GPS PB10
+GPS_TO_CPU PB11
+USART3 AF7
+9600 bit/s
+USART3 is on APB1
+
 (gdb) monitor version
 Black Magic Probe (Firmware v1.6.1-1-g74af1f5) (Hardware Version 3)
 Copyright (C) 2015  Black Sphere Technologies Ltd.

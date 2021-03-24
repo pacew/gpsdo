@@ -4,8 +4,15 @@
 #define RCC_PLLCFGR (*(unsigned int volatile *)0x40023804)
 #define RCC_CFGR (*(unsigned int volatile *)0x40023808)
 #define RCC_AHB1ENR (*(unsigned int volatile *)0x40023830)
+#define RCC_APB1ENR (*(unsigned int volatile *)0x40023840)
+#define GPIOB_MODER (*(unsigned int volatile *)0x40020400)
+#define GPIOB_AFRH (*(unsigned int volatile *)0x40020424)
 #define GPIOA_MODER (*(unsigned int volatile *)0x40020000)
 #define GPIOA_BSRR (*(unsigned int volatile *)0x40020018)
+#define USART3_SR (*(unsigned int volatile *)0x40004800)
+#define USART3_DR (*(unsigned int volatile *)0x40004804)
+#define USART3_BRR (*(unsigned int volatile *)0x40004808)
+#define USART3_CR1 (*(unsigned int volatile *)0x4000480c)
 #define C_ADC_CCR (*(unsigned int volatile *)0x40012304)
 #define FLASH_ACR (*(unsigned int volatile *)0x40023c00)
 
@@ -14,3 +21,8 @@
 #define RCC_CR_HSERDY 0x20000
 #define RCC_CR_HSEON 0x10000
 #define RCC_AHB1ENR_GPIOAEN 0x1
+#define RCC_APB1ENR_USART3EN 0x40000
+#define USART_SR_RXNE 0x20
+#define USART_CR1_UE 0x2000
+#define USART_CR1_TE 0x8
+#define USART_CR1_RE 0x4

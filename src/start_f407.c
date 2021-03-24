@@ -2,6 +2,10 @@
 
 #include "printf.h"
 
+static void setup_usart3 (void);
+int gps_getc (void);
+
+
 double hclk_hz = 16e6;
 double apb1_hz = 4e6;
 double apb2_hz = 8e6;
@@ -160,6 +164,8 @@ blinker (void)
 
 	GPIOA_MODER = (GPIOA_MODER & ~0xc0) | 0x40; // output
 
+	setup_usart3 ();
+
 	int c = 0;
 	while (1) {
 		GPIOA_BSRR = (1 << 3);
@@ -168,10 +174,9 @@ blinker (void)
 		GPIOA_BSRR = (1 << (3+16));
 		small_delay();
 
-		swo_putc ('C');
-		c++;
-		swo_putc (c);
-		printf ("hello %d %x %p\n", c, c, blinker);
+		swo_putc('x');
+		if ((c = gps_getc ()) >= 0)
+			swo_putc (c);
 	}
 }
 
@@ -404,4 +409,45 @@ setup_clock (void)
 	apb1_hz = 42e6;
 	apb2_hz = 84e6;
 	systick_setup ();
+}
+
+
+static void
+setup_usart3 (void)
+{
+	/* 
+	 * USART3 TX on pin PB10 alt func 7
+	 * USART3 RX on pin PB11 alt func 7
+	 * on APB1
+	 */
+
+	/* careful ... different usarts use different clocks */
+	float clock = apb1_hz;
+
+	RCC_APB1ENR |= RCC_APB1ENR_USART3EN; // enable clock
+	
+	/* enable GPIO */
+	RCC_AHB1ENR |= RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOAEN;
+	busywait_ticks (1);
+	GPIOB_MODER |= 2<<(10*2); // alternate func for PB10
+	GPIOB_MODER |= 2<<(11*2); // alternate func for PB11
+
+	GPIOB_AFRH |= 7<<((10-8)*4); // PB10 alternate 7
+	GPIOB_AFRH |= 7<<((11-8)*4); // PB11 alternate 7
+
+	USART3_BRR = clock / 9600;
+
+	USART3_CR1 |= USART_CR1_UE; // USART Enable
+	busywait_ticks (1);
+	USART3_CR1 |= USART_CR1_TE | USART_CR1_RE; // xmit & rcv enable
+}
+
+int
+gps_getc (void)
+{
+	return (USART3_DR & 0xff);
+
+	if (USART3_SR & USART_SR_RXNE)
+		return (USART3_DR & 0xff);
+	return (-1);
 }
