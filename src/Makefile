@@ -3,10 +3,9 @@ ARM_PREFIX = arm-none-eabi
 ARM_CC = $(ARM_PREFIX)-gcc
 ARM_OBJDUMP = $(ARM_PREFIX)-objdump
 # was -Os
-ARM_CFLAGS = -g -Wall -I. -I../tinyusb/src -mthumb -nostdlib -mcpu=cortex-m4 \
-	-ffreestanding -nodefaultlibs \
-	-T ldscript -Wl,--gc-sections,--relax \
-	-nostartfiles -nostdlib
+ARM_CFLAGS = -g -Wall -I. -I../tinyusb/src -mthumb -mcpu=cortex-m4 \
+	-ffreestanding -nodefaultlibs -nostartfiles -nostdlib \
+	-T ldscript -Wl,--gc-sections,--relax
 ARM_LIBS = -lgcc
 
 .SUFFIXES: .armo
@@ -31,7 +30,7 @@ blink.elf: $(BLINK_OBJS) Makefile ldscript
 	$(ARM_CC) $(ARM_CFLAGS) -o blink.elf $(BLINK_OBJS) $(ARM_LIBS)
 	$(ARM_PREFIX)-size blink.elf
 
-START_F407_OBJS = vectors.armo start_f407.armo
+START_F407_OBJS = vectors.armo start_f407.armo printf.armo
 $(START_F407_OBJS): regs.h
 start_f407.elf: $(START_F407_OBJS) Makefile ldscript
 	$(ARM_CC) $(ARM_CFLAGS) -o start_f407.elf $(START_F407_OBJS) $(ARM_LIBS)

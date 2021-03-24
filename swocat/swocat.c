@@ -14,6 +14,7 @@
 #include <limits.h>
 #include <termios.h>
 #include <signal.h>
+#include <ctype.h>
 
 #define VID       (0x1d50)
 #define PID       (0x6018)
@@ -126,10 +127,12 @@ soak (void)
 			for (i = 0; i < size; i++) {
 				c = rbuf[i] & 0xff;
 				if (lastc == 1) {
-					if (c >= ' ' && c < '~')
+					if ((' ' <= c && c <= '~')
+					    || isspace (c)) {
 						putchar (c);
-					else
+					} else {
 						printf ("[%02x]", c);
+					}
 					fflush (stdout);
 				}
 				lastc = c;

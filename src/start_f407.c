@@ -1,5 +1,7 @@
 #include "regs.h"
 
+#include "printf.h"
+
 double hclk_hz = 16e6;
 double apb1_hz = 4e6;
 double apb2_hz = 8e6;
@@ -124,6 +126,18 @@ swo_putc (int c)
 	ITM_STIM0 = c;
 }
 
+void
+_putchar (char c)
+{
+	if (c == '\n')
+		_putchar ('\r');
+
+	while ((ITM_STIM0 & 1) == 0)
+		;
+	ITM_STIM0 = c;
+}
+
+
 int delay_speed = 5000 * 1000;
 
 void
@@ -157,6 +171,7 @@ blinker (void)
 		swo_putc ('C');
 		c++;
 		swo_putc (c);
+		printf ("hello %d %x %p\n", c, c, blinker);
 	}
 }
 
