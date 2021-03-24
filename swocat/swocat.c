@@ -21,14 +21,8 @@
 #define ENDPOINT  (0x85)
 
 #define TRANSFER_SIZE (64)
-#define NUM_FIFOS     32
-#define MAX_FIFOS     128
 
-#define CHANNELNAME   "chan"
-
-#define BOOL       char
-#define FALSE      (0)
-#define TRUE       (!FALSE)
+int vflag;
 
 void
 dump (void *buf, int n)
@@ -93,23 +87,53 @@ do_connect (void)
 int want_message;
 
 void
+process_swit (int chan, uint32_t val)
+{
+	printf ("%d; 0x%02x\n", chan, val);
+}
+
+
+/*
+
+https://developer.arm.com/documentation/ddi0314/h/instrumentation-trace-macrocell/about-the-instrumentation-trace-macrocell/trace-packet-format
+*/
+
+int lastc;
+
+void
 soak (void)
 {
-	unsigned char cbw[TRANSFER_SIZE];
+	unsigned char rbuf[TRANSFER_SIZE];
 	int size;
 	int rc;
 	int connection_ok = 0;
+	int i;
+	int c;
 
 	while ((rc = libusb_bulk_transfer(handle, 
 					  ENDPOINT, 
-					  cbw, 
+					  rbuf, 
 					  TRANSFER_SIZE, 
 					  &size, 
 					  1000)) == 0) {
 		if (size > 0) {
 			connection_ok = 1;
 			want_message = 1;
-			dump (cbw, size);
+
+			if (vflag)
+				dump (rbuf, size);
+
+			for (i = 0; i < size; i++) {
+				c = rbuf[i] & 0xff;
+				if (lastc == 1) {
+					if (c >= ' ' && c < '~')
+						putchar (c);
+					else
+						printf ("[%02x]", c);
+					fflush (stdout);
+				}
+				lastc = c;
+			}
 		}
 	}
 
@@ -123,6 +147,11 @@ main (int argc, char **argv)
 	int c;
 
 	while ((c = getopt (argc, argv, "v")) != EOF) {
+		switch (c) {
+		case 'v':
+			vflag = 1;
+			break;
+		}
 	}
 
 	if (libusb_init (NULL) < 0) {

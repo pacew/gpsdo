@@ -154,8 +154,9 @@ blinker (void)
 		GPIOA_BSRR = (1 << (3+16));
 		small_delay();
 
-		c++;
 		swo_putc ('C');
+		c++;
+		swo_putc (c);
 	}
 }
 
