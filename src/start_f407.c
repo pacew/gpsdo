@@ -73,8 +73,8 @@ setup_swo (void)
 	  this can be done by software (using a printf function)
 	*/
 
-	double swo_clock = 2.25e6;
-	swo_clock = 9600;
+	/* 200k appears safe with RZ coding */
+	double swo_clock = 115200;
 	
 	int swoscaler = (hclk_hz / swo_clock) - 1;
 	TPIU_ACPR = swoscaler;
