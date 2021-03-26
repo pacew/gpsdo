@@ -4,7 +4,7 @@
 
 int enable_dma;
 
-char gps_rbuf[1024];
+unsigned char gps_rbuf[1024];
 int gps_rbuf_out_idx;
 
 
@@ -282,15 +282,19 @@ blinker (void)
 		if (systick_secs (last) >= 0.5) {
 			printf ("tick ");
 			int i;
-			for (i = 0; i < 10; i++)
+			for (i = 0; i < 5; i++)
 				printf (" %02x", gps_rbuf[i]);
-			printf ("  ndtr %08x\n", DMA1_S1NDTR);
+			printf ("  ndtr %08x", DMA1_S1NDTR);
+			printf (" %08x %08x %08x",
+				DMA1_LISR,
+				DMA1_HISR,
+				DMA1_S1CR);
+				printf ("\n");
 			last = systick_read ();
 		}
 
-		if (1) {
-			while ((c = gps_getc ()) >= 0)
-				;
+		while ((c = gps_getc ()) >= 0) {
+			printf ("%c", c);
 		}
 	}
 }
@@ -552,7 +556,6 @@ gps_getc (void)
 		int c = gps_rbuf[gps_rbuf_out_idx];
 		gps_rbuf_out_idx = (gps_rbuf_out_idx + 1) 
 			% sizeof gps_rbuf;
-		printf ("%c", c);
-		return (-1);
+		return (c);
 	}
 }
