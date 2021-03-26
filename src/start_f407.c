@@ -212,6 +212,14 @@ setup_swo (void)
 	
 }
 	  
+int
+traceswo_ready (void)
+{
+	if (ITM_STIM0 & 1)
+		return (1);
+	return (0);
+}
+
 void
 swo_putc (int c)
 {
@@ -220,6 +228,8 @@ swo_putc (int c)
 	ITM_STIM0 = c;
 }
 
+int swobusy;
+
 void
 _putchar (char c)
 {
@@ -227,7 +237,7 @@ _putchar (char c)
 		_putchar ('\r');
 
 	while ((ITM_STIM0 & 1) == 0)
-		;
+		swobusy++;
 	ITM_STIM0 = c;
 }
 
@@ -285,16 +295,22 @@ blinker (void)
 			for (i = 0; i < 5; i++)
 				printf (" %02x", gps_rbuf[i]);
 			printf ("  ndtr %08x", DMA1_S1NDTR);
-			printf (" %08x %08x %08x",
+			printf (" %08x %08x %08x    %d",
 				DMA1_LISR,
 				DMA1_HISR,
-				DMA1_S1CR);
+				DMA1_S1CR,
+				swobusy);
 				printf ("\n");
 			last = systick_read ();
 		}
 
-		while ((c = gps_getc ()) >= 0) {
+		while (1) {
+			if (! traceswo_ready ())
+				break;
+			if ((c = gps_getc ()) < 0)
+				break;
 			printf ("%c", c);
+			break;
 		}
 	}
 }
