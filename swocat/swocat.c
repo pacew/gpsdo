@@ -116,7 +116,7 @@ soak (void)
 					  rbuf, 
 					  TRANSFER_SIZE, 
 					  &size, 
-					  1000)) == 0) {
+					  2000)) == 0) {
 		if (size > 0) {
 			connection_ok = 1;
 			want_message = 1;

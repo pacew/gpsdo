@@ -2,6 +2,12 @@
 
 #include "printf.h"
 
+int enable_dma;
+
+char gps_rbuf[1024];
+int gps_rbuf_out_idx;
+
+
 double hclk_hz = 16e6;
 double apb1_hz = 4e6;
 double apb2_hz = 8e6;
@@ -250,6 +256,8 @@ pb11_read (void)
 	return (0);
 }
 
+void setup_dma (void);
+
 void
 blinker (void)
 {
@@ -265,31 +273,25 @@ blinker (void)
 
 	//pb11_setup ();
 	setup_usart3 ();
+	setup_dma ();
 
 	unsigned int last = systick_read();
 
 	int c = 0;
 	while (1) {
-		if (systick_secs (last) >= 1) {
-			int a, b, c;
-			a = USART3_SR;
-			USART3_SR &= ~0x100;
-			b = USART3_DR;
-			c = USART3_SR;
-			printf ("tick %x %x %x\n", a, b, c);
+		if (systick_secs (last) >= 0.5) {
+			printf ("tick ");
+			int i;
+			for (i = 0; i < 10; i++)
+				printf (" %02x", gps_rbuf[i]);
+			printf ("  ndtr %08x\n", DMA1_S1NDTR);
 			last = systick_read ();
 		}
 
-		if (0) {
-			GPIOA_BSRR = (1 << 3);
-			small_delay();
-
-			GPIOA_BSRR = (1 << (3+16));
-			small_delay();
+		if (1) {
+			while ((c = gps_getc ()) >= 0)
+				;
 		}
-
-		if ((c = gps_getc ()) >= 0)
-			swo_putc (c);
 	}
 }
 
@@ -452,7 +454,7 @@ setup_usart3 (void)
 	 */
 
 	/* careful ... different usarts use different clocks */
-	float clock = apb1_hz;
+	float clock = hclk_hz;
 
 	// enable devices
 	RCC_APB1ENR |= RCC_APB1ENR_USART3EN;
@@ -466,8 +468,7 @@ setup_usart3 (void)
 	GPIOB_AFRH |= 7<<((10-8)*4); // PB10 alternate 7
 	GPIOB_AFRH |= 7<<((11-8)*4); // PB11 alternate 7
 
-	/* should be 9600 ... not sure where the factor of 4 is from */
-	USART3_BRR = clock / 2400;
+	USART3_BRR = clock / 9600;
 
 	USART3_CR1 |= USART_CR1_UE; // USART Enable
 	busywait_ticks (1);
@@ -481,10 +482,77 @@ setup_usart3 (void)
 
 }
 
+void
+setup_dma (void)
+{
+	enable_dma = 1;
+	
+	if ((RCC_AHB1ENR & RCC_AHB1ENR_DMA1EN) == 0) {
+		RCC_AHB1ENR |= RCC_AHB1ENR_DMA1EN;
+		busywait_ms (1);
+	}
+			     
+	DMA1_S1NDTR = sizeof gps_rbuf;
+	DMA1_S1PAR = (int)&USART3_DR;
+	DMA1_S1M0AR = (int)gps_rbuf;
+	
+	struct dma_sxcr {
+		unsigned int en : 1;
+		unsigned int dmeie : 1;
+		unsigned int teie : 1;
+		unsigned int htie : 1;
+		unsigned int tcie : 1;
+		unsigned int pfctrl : 1;
+		unsigned int dir : 2;
+		unsigned int circ : 1;
+		unsigned int pinc : 1;
+		unsigned int minc : 1;
+		unsigned int psize : 2;
+		unsigned int msize : 2;
+		unsigned int pincos : 1;
+		unsigned int pl : 2;
+		unsigned int dbm : 1;
+		unsigned int ct : 1;
+		unsigned int : 1;
+		unsigned int pburst : 2;
+		unsigned int mburst : 2;
+		unsigned int chsel : 3;
+		unsigned int : 4;
+	} volatile *s1cr = (void *)&DMA1_S1CR;
+	printf ("s1cr before %x\n", DMA1_S1CR);
+	s1cr->chsel = 4;
+	s1cr->minc = 1;
+	s1cr->pinc = 0;
+	s1cr->circ = 1;
+	s1cr->dir = 0;
+	printf ("s1cr after %x\n", DMA1_S1CR);
+
+	
+	USART3_CR3 |= USART_CR3_DMAR;
+
+	s1cr->en = 1;
+
+}
+	  
+
 int
 gps_getc (void)
 {
-	if (USART3_SR & USART_SR_RXNE)
+	if (enable_dma == 0) {
+		if ((USART3_SR & USART_SR_RXNE) == 0)
+			return (-1);
+
 		return (USART3_DR & 0xff);
-	return (-1);
+	} else {
+		int in_idx = (sizeof gps_rbuf - DMA1_S1NDTR) % sizeof gps_rbuf;
+		
+		if (gps_rbuf_out_idx == in_idx)
+			return (-1);
+		
+		int c = gps_rbuf[gps_rbuf_out_idx];
+		gps_rbuf_out_idx = (gps_rbuf_out_idx + 1) 
+			% sizeof gps_rbuf;
+		printf ("%c", c);
+		return (-1);
+	}
 }

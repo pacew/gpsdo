@@ -1,3 +1,12 @@
+https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html
+-fstrict-volatile-bitfields
+
+USART3_RX dma1 channel 4 stream 1
+USART3_TX dma1 channel 4 stream 3, or chan 7 stream 4
+
+
+
+
 gps:
 CPU_TO_GPS PB10
 GPS_TO_CPU PB11
