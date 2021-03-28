@@ -1,3 +1,40 @@
+gpsd -D 2 -N udp://localhost:56780
+
+
+
+
+
+
+
+
+https://forum.pjrc.com/threads/61581-Teensy-4-1-NTP-server
+
+
+https://www.digikey.com/catalog/en/partgroup/mini-gps-bds-unit-at6558/96591
+6558 chip
+https://forum.arduino.cc/index.php?topic=695156.0
+BA CE 10 00 06 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 10 00 06 03 
+interval
+BA CE 10 00 06 03 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 11 00 06 03
+width
+BA CE 10 00 06 03 01 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 13 00 06 03
+enable
+BA CE 10 00 06 03 01 00 00 00 02 00 00 00 01 00 00 00 00 00 00 00 14 00 06 03
+polarity
+BA CE 10 00 06 03 01 00 00 00 02 00 00 00 01 01 00 00 00 00 00 00 14 01 06 03 
+time ref
+BA CE 10 00 06 03 01 00 00 00 02 00 00 00 01 01 01 00 00 00 00 00 14 01 07 03 
+time source
+BA CE 10 00 06 03 01 00 00 00 02 00 00 00 01 01 01 02 00 00 00 00 14 01 07 05 
+user delay
+BA CE 10 00 06 03 01 00 00 00 02 00 00 00 01 01 01 02 5F 70 89 30 73 71 90 35 
+
+BA CE 10 00 06 03 00 00 00 00 00 00 00 00 00 00 00 00 5F 70 89 30 6F 70 8F 33 
+BA CE 10 00 06 03 00 00 00 00 00 00 00 00 00 00 00 00 5F 70 09 31 6F 70 0F 34
+BA CE 10 00 06 03 00 00 00 00 00 00 00 00 00 00 00 00 8F 28 4E 31 9F 28 54 34
+BA CE 10 00 06 03 00 00 00 00 00 00 00 00 00 00 00 00 5F 70 89 31 6F 70 8F 34
+BA CE 10 00 06 03 00 00 00 00 00 00 00 00 00 00 00 00 5F 70 09 32 6F 70 0F 35 
+
 https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html
 -fstrict-volatile-bitfields
 
@@ -73,3 +110,31 @@ APB2 Prescaler / 2 -> PCLK2 84
 
 adcpre = divide by 4 yielding 84/4 = 21 MHz adc clock
 
+================================================================
+http://navspark.mybigcommerce.com/content/NMEA_Format_v0.1.pdf
+$GNGGA,,,,,,0,00,25.5,,,,,,*64
+  true position
+
+$GNGLL,,,,,,V,N*7A
+  position time and fix
+
+$GPGSA,A,1,,,,,,,,,,,,,25.5,25.5,25.5*02
+$BDGSA,A,1,,,,,,,,,,,,,25.5,25.5,25.5*13
+  id's of satellites used for position fix
+
+$GPGSV,1,1,00*79
+$BDGSV,1,1,00*68
+  satellite information with elevation and az
+
+$GNRMC,,V,,,,,,,,,,N*4D
+  time, date, position, course, speed
+  
+$GNVTG,,,,,,,,,N*2E
+  course and speed relative to ground
+
+$GNZDA,,,,,,*56
+  utc day month year tz
+
+$GPTXT,01,01,01,ANTENNA OPEN*25
+
+cksum is xor of all bytes between $ and *

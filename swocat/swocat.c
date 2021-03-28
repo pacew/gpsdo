@@ -15,6 +15,7 @@
 #include <termios.h>
 #include <signal.h>
 #include <ctype.h>
+#include <netinet/in.h>
 
 #define VID       (0x1d50)
 #define PID       (0x6018)
@@ -101,6 +102,28 @@ https://developer.arm.com/documentation/ddi0314/h/instrumentation-trace-macrocel
 
 int lastc;
 
+int gpsd_sock;
+struct sockaddr_in gpsd_addr;
+
+void
+gpsd_step (int c)
+{
+	static char buf[1000];
+	static int idx;
+
+	if (c == '$' || idx + 10 > sizeof buf)
+		idx = 0;
+
+	buf[idx++] = c;
+	if (buf[0] == '$' && c == '\n') {
+		buf[idx] = 0;
+		sendto (gpsd_sock, buf, strlen (buf), 0,
+			(struct sockaddr *)&gpsd_addr, sizeof gpsd_addr);
+		idx = 0;
+	}
+}
+
+
 void
 soak (void)
 {
@@ -130,6 +153,7 @@ soak (void)
 					if ((' ' <= c && c <= '~')
 					    || isspace (c)) {
 						putchar (c);
+						gpsd_step (c);
 					} else {
 						printf ("[%02x]", c);
 					}
@@ -161,6 +185,10 @@ main (int argc, char **argv)
 		fprintf (stderr, "libusb_init error\n");
 		exit (1);
 	}
+
+	gpsd_sock = socket (AF_INET, SOCK_DGRAM, 0);
+	gpsd_addr.sin_family = AF_INET;
+	gpsd_addr.sin_port = htons (5555);
 
 	want_message = 1;
 	while (1) {

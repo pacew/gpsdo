@@ -285,11 +285,20 @@ blinker (void)
 	setup_usart3 ();
 	setup_dma ();
 
+	if (1) {
+		GPIOB_MODER = (GPIOB_MODER & ~3) | 1; // output
+		GPIOB_BSRR = (1 << 0);
+		//GPIOB_BSRR = (1 << (0+16));
+	}
+
+
 	unsigned int last = systick_read();
 
 	int c = 0;
+
+	int col = 0;
 	while (1) {
-		if (systick_secs (last) >= 0.5) {
+		if (0 && systick_secs (last) >= 0.5) {
 			printf ("tick ");
 			int i;
 			for (i = 0; i < 5; i++)
@@ -309,7 +318,14 @@ blinker (void)
 				break;
 			if ((c = gps_getc ()) < 0)
 				break;
+			col++;
 			printf ("%c", c);
+			if (c == '\r')
+				col = 0;
+			if (col >= 100) {
+				col = 0;
+				printf ("\n");
+			}
 			break;
 		}
 	}

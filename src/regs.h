@@ -12,6 +12,7 @@
 #define RCC_AHB1ENR (*(unsigned int volatile *)0x40023830)
 #define RCC_APB1ENR (*(unsigned int volatile *)0x40023840)
 #define GPIOB_MODER (*(unsigned int volatile *)0x40020400)
+#define GPIOB_BSRR (*(unsigned int volatile *)0x40020418)
 #define GPIOB_AFRH (*(unsigned int volatile *)0x40020424)
 #define GPIOA_MODER (*(unsigned int volatile *)0x40020000)
 #define USART3_SR (*(unsigned int volatile *)0x40004800)
