@@ -1,6 +1,13 @@
 gpsd -D 2 -N udp://localhost:56780
 
 
+1pps on PA10 - AF1 = TIM1_CH3
+osc_control on PA4
+osc_10mhz on PA8 - = TIM1_CH1
+board_temp on PA2 - has 10k to 3.3v; 47k thermistor to gnd C86142
+gps_onoff on pb0
+gps_nreset on pb1
+
 
 
 

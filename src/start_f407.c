@@ -269,6 +269,124 @@ pb11_read (void)
 void setup_dma (void);
 
 void
+setup_tim1 (void)
+{
+	struct {
+		unsigned int cen : 1;
+		unsigned int udis : 1;
+		unsigned int urs : 1;
+		unsigned int opm : 1;
+		unsigned int dir : 1;
+		unsigned int cms : 2;
+		unsigned int arpe : 1;
+		unsigned int ckd : 2;
+		unsigned int : 6;
+	} volatile *tim1_cr1 = (void *)&TIM1_CR1;
+
+	struct {
+		unsigned int cc1s : 2;
+		unsigned int ic1psc : 2;
+		unsigned int ic1f : 4;
+		unsigned int cc2s : 2;
+		unsigned int ic2psc : 2;
+		unsigned int ic2f : 4;
+	} volatile *tim1_ccmr1_input = (void *)&TIM1_CCMR1_Input;
+	
+	struct {
+		unsigned int cc1e : 1;
+		unsigned int cc1p : 1;
+		unsigned int cc1ne : 1;
+		unsigned int cc1np : 1;
+		unsigned int cc2e : 1;
+		unsigned int cc2p : 1;
+		unsigned int cc2ne : 1;
+		unsigned int cc2np : 1;
+		unsigned int cc3e : 1;
+		unsigned int cc3p : 1;
+		unsigned int cc3ne : 1;
+		unsigned int cc3np : 1;
+		unsigned int cc4e : 1;
+		unsigned int cc4p : 1;
+		unsigned int : 1;
+		unsigned int cc4np : 1;
+	} volatile *tim1_ccer = (void *)&TIM1_CCER;
+
+	RCC_APB2ENR |= RCC_APB2ENR_TIM1EN;
+	small_delay ();
+
+	if (1) {
+		tim1_ccmr1_input->cc1s = 1; // IC1 is mapped on TI1
+		tim1_ccer->cc1e = 1; // enable capture
+	}
+
+	tim1_cr1->cen = 1;
+
+	printf ("RCC_APB2ENR %x\n", RCC_APB2ENR);
+
+	unsigned int volatile *reg = &TIM1_CR1;
+	for (int i = 0; i < 18; i++) {
+		printf ("%p 0x%x\n", &reg[i], reg[i]);
+	}
+}
+
+int
+get_tim1 (void)
+{
+	return (TIM1_CNT);
+}
+
+int
+get_tim1_capture (void)
+{
+	struct {
+		unsigned int uif : 1;
+		unsigned int cc1if : 1;
+		unsigned int cc2if : 1;
+		unsigned int cc3if : 1;
+		unsigned int cc4if : 1;
+		unsigned int comif : 1;
+		unsigned int tif : 1;
+		unsigned int bif : 1;
+		unsigned int : 1;
+		unsigned int cc1of : 1;
+		unsigned int cc2of : 1;
+		unsigned int cc3of : 1;
+		unsigned int cc4of : 1;
+		unsigned int : 3;
+	} volatile *tim1_sr = (void *)&TIM1_SR;
+
+	if (tim1_sr->cc1if)
+		return (TIM1_CCR1);
+
+	return (-1);
+}
+
+
+void
+gps_soak (void)
+{
+	int c;
+	
+	int col = 0;
+	while (1) {
+		if (! traceswo_ready ())
+			break;
+		if ((c = gps_getc ()) < 0)
+			break;
+		col++;
+		printf ("%c", c);
+		if (c == '\r')
+			col = 0;
+		if (col >= 100) {
+			col = 0;
+			printf ("\n");
+		}
+		break;
+	}
+}
+
+
+void
 blinker (void)
 {
 	delay_speed = 50000;
@@ -284,6 +402,7 @@ blinker (void)
 	//pb11_setup ();
 	setup_usart3 ();
 	setup_dma ();
+	setup_tim1 ();
 
 	if (1) {
 		GPIOB_MODER = (GPIOB_MODER & ~3) | 1; // output
@@ -293,41 +412,18 @@ blinker (void)
 
 
 	unsigned int last = systick_read();
+	unsigned int last_tick = 0;
 
-	int c = 0;
-
-	int col = 0;
 	while (1) {
-		if (0 && systick_secs (last) >= 0.5) {
-			printf ("tick ");
-			int i;
-			for (i = 0; i < 5; i++)
-				printf (" %02x", gps_rbuf[i]);
-			printf ("  ndtr %08x", DMA1_S1NDTR);
-			printf (" %08x %08x %08x    %d",
-				DMA1_LISR,
-				DMA1_HISR,
-				DMA1_S1CR,
-				swobusy);
-				printf ("\n");
+		if (systick_secs (last) >= 0.1) {
 			last = systick_read ();
+			int this_tick = get_tim1 ();
+			printf ("tick %10d %10d\n", 
+				this_tick, this_tick - last_tick);
+			last_tick = this_tick;
 		}
 
-		while (1) {
-			if (! traceswo_ready ())
-				break;
-			if ((c = gps_getc ()) < 0)
-				break;
-			col++;
-			printf ("%c", c);
-			if (c == '\r')
-				col = 0;
-			if (col >= 100) {
-				col = 0;
-				printf ("\n");
-			}
-			break;
-		}
+		//gps_soak ();
 	}
 }
 
