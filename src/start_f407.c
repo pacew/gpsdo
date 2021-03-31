@@ -417,9 +417,11 @@ blinker (void)
 	while (1) {
 		if (systick_secs (last) >= 0.1) {
 			last = systick_read ();
+			int cap = get_tim1_capture ();
+
 			int this_tick = get_tim1 ();
-			printf ("tick %10d %10d\n", 
-				this_tick, this_tick - last_tick);
+			printf ("tick %10d %10d %10d\n", 
+				this_tick, this_tick - last_tick, cap);
 			last_tick = this_tick;
 		}
 

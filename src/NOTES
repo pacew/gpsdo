@@ -8,7 +8,52 @@ board_temp on PA2 - has 10k to 3.3v; 47k thermistor to gnd C86142
 gps_onoff on pb0
 gps_nreset on pb1
 
+ch 17
+TIM1 advanced control 16 bit
+ch 18
+TIM2 general purpose 32 bit; has ETR
+TIM3 general purpose 16 bit; has ETR
+TIM4 general purpose 16 bit; has ETR
+TIM5 general purpose 32 bit
+ch 20
+basic timer
+TIM6 16 bit; trigger dac
+TIM7 16 bit; trigger dac
+ch 17
+TIM8 advanced control 16 bit
+ch 19
+TIM9 general purpose 16 bit 2 channels  w/sync
+TIM10 general purpose 16 bit 1 channel
+TIM11 general purpose 16 bit 1 channel
+TIM12 general purpose 16 bit 2 channels w/sync
+TIM13 general purpose 16 bit 1 channel
+TIM14 general purpose 16 bit 1 channel
 
+sync 18.3.15
+
+interconnections tim1&8 to tim2..5: sect 18.4.3 page 632
+tim9 7 12 interconnections: 19.4.2 p 674
+
+
+slave    ITR[0..3]
+1   5_TRGO  2_TRGO   3_TRGO  4_TRGO
+2   1_TRGO  8_TRGO   3_TRGO  4_TRGO
+3   1_TRGO  2_TRGO   5_TRGO  4_TRGO
+4   1_TRGO  2_TRGO   3_TRGO  8_TRGO
+5   2_TRGO  3_TRGO   4_TRGO  8_TRGO
+8   1_TRGO  2_TRGO   4_TRGO  5_TRGO
+9   2_TRGO  3_TRGO  10_OC   11_OC
+12  4_TRGO  5_TRGO  13_OC   14_OC
+
+
+TIM1 as prescaller for TIM2
+MMS = 010 = Update -> clocks slave on TIM1 update event
+
+tim1_cr2.mms = 0b010
+tim2_smcr.ts = 0; // ITR0 so TIM1_TRGO
+tim2_smcr.sms = 0b111; // clock on rising edge of trigger
+tim1_cr1.cen = 1
+tim2_cr1.cen = 1
 
 
 
