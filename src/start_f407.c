@@ -284,6 +284,24 @@ setup_tim1 (void)
 	} volatile *tim1_cr1 = (void *)&TIM1_CR1;
 
 	struct {
+		unsigned int ccpc : 1;
+		unsigned int : 1;
+		unsigned int ccus : 1;
+		unsigned int ccds : 1;
+		unsigned int mms : 3;
+		unsigned int ti1s : 1;
+		unsigned int ois1 : 1;
+		unsigned int ois1n : 1;
+		unsigned int ois2 : 1;
+		unsigned int ois2n : 1;
+		unsigned int ois3 : 1;
+		unsigned int ois3n : 1;
+		unsigned int ois4 : 1;
+		unsigned int : 1;
+	} volatile *tim1_cr2 = (void *)&TIM1_CR2;
+		
+
+	struct {
 		unsigned int cc1s : 2;
 		unsigned int ic1psc : 2;
 		unsigned int ic1f : 4;
@@ -311,7 +329,31 @@ setup_tim1 (void)
 		unsigned int cc4np : 1;
 	} volatile *tim1_ccer = (void *)&TIM1_CCER;
 
+	struct {
+		unsigned int cen : 1;
+		unsigned int udis : 1;
+		unsigned int urs : 1;
+		unsigned int opm : 1;
+		unsigned int dir : 1;
+		unsigned int cms : 2;
+		unsigned int arpe : 1;
+		unsigned int ckd : 2;
+		unsigned int : 6;
+	} volatile *tim2_cr1 = (void *)&TIM2_CR1;
+
+	struct {
+		unsigned int sms : 3;
+		unsigned int : 1;
+		unsigned int ts : 3;
+		unsigned int msm : 1;
+		unsigned int etf : 4;
+		unsigned int etps : 2;
+		unsigned int ece : 14;
+		unsigned int etp : 15;
+	} volatile *tim2_smcr = (void *)&TIM2_SMCR;
+
 	RCC_APB2ENR |= RCC_APB2ENR_TIM1EN;
+	RCC_APB1ENR |= RCC_APB1ENR_TIM2EN;
 	small_delay ();
 
 	if (1) {
@@ -319,20 +361,35 @@ setup_tim1 (void)
 		tim1_ccer->cc1e = 1; // enable capture
 	}
 
+	tim1_cr2->mms = 2; // master mode: trigger output on update
+	tim2_smcr->ts = 0; // select ITR0 which is TIM1_TRGO
+	tim2_smcr->sms = 7; // ext clock, clock on rising edge of trigger
+
 	tim1_cr1->cen = 1;
+	tim2_cr1->cen = 1;
 
-	printf ("RCC_APB2ENR %x\n", RCC_APB2ENR);
-
-	unsigned int volatile *reg = &TIM1_CR1;
-	for (int i = 0; i < 18; i++) {
-		printf ("%p 0x%x\n", &reg[i], reg[i]);
+	if (0) {
+		unsigned int volatile *reg = &TIM1_CR1;
+		for (int i = 0; i < 18; i++) {
+			printf ("%p 0x%x\n", &reg[i], reg[i]);
+		}
 	}
 }
 
-int
+long long
 get_tim1 (void)
 {
-	return (TIM1_CNT);
+	int t1, t1a;
+	long long t2;
+
+	while (1) {
+		t1 = TIM1_CNT;
+		t2 = TIM2_CNT;
+		t1a = TIM1_CNT;
+		if (t1 <= t1a)
+			break;
+	}
+	return ((t2 << 16) | t1);
 }
 
 int
@@ -412,15 +469,15 @@ blinker (void)
 
 
 	unsigned int last = systick_read();
-	unsigned int last_tick = 0;
+	long long last_tick = 0;
 
 	while (1) {
 		if (systick_secs (last) >= 0.1) {
 			last = systick_read ();
 			int cap = get_tim1_capture ();
 
-			int this_tick = get_tim1 ();
-			printf ("tick %10d %10d %10d\n", 
+			long long this_tick = get_tim1 ();
+			printf ("tick %15lld %15lld %10d\n", 
 				this_tick, this_tick - last_tick, cap);
 			last_tick = this_tick;
 		}

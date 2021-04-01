@@ -21,11 +21,15 @@
 #define USART3_CR3 (*(unsigned int volatile *)0x40004814)
 #define C_ADC_CCR (*(unsigned int volatile *)0x40012304)
 #define TIM1_CR1 (*(unsigned int volatile *)0x40010000)
+#define TIM1_CR2 (*(unsigned int volatile *)0x40010004)
 #define TIM1_SR (*(unsigned int volatile *)0x40010010)
 #define TIM1_CCMR1_Input (*(unsigned int volatile *)0x40010018)
 #define TIM1_CCER (*(unsigned int volatile *)0x40010020)
 #define TIM1_CNT (*(unsigned int volatile *)0x40010024)
 #define TIM1_CCR1 (*(unsigned int volatile *)0x40010034)
+#define TIM2_CR1 (*(unsigned int volatile *)0x40000000)
+#define TIM2_SMCR (*(unsigned int volatile *)0x40000008)
+#define TIM2_CNT (*(unsigned int volatile *)0x40000024)
 #define FLASH_ACR (*(unsigned int volatile *)0x40023c00)
 
 #define RCC_CR_PLLRDY 0x2000000
@@ -36,6 +40,7 @@
 #define RCC_AHB1ENR_GPIOBEN 0x2
 #define RCC_AHB1ENR_GPIOAEN 0x1
 #define RCC_APB1ENR_USART3EN 0x40000
+#define RCC_APB1ENR_TIM2EN 0x1
 #define RCC_APB2ENR_TIM1EN 0x1
 #define USART_SR_RXNE 0x20
 #define USART_CR1_UE 0x2000
