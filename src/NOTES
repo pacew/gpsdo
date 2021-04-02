@@ -1,3 +1,5 @@
+https://www.embecosm.com/appnotes/ean9/ean9-howto-newlib-1.0.html#sec_configure_host
+
 gpsd -D 2 -N udp://localhost:56780
 
 
@@ -190,3 +192,10 @@ $GNZDA,,,,,,*56
 $GPTXT,01,01,01,ANTENNA OPEN*25
 
 cksum is xor of all bytes between $ and *
+================================================================
+libraries from:
+/usr/lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m
+crtbegin.o  crtend.o  crtfastmath.o  crti.o  crtn.o  fpv4-sp  fpv5  libgcc.a  libgcov.a
+
+/usr/lib/arm-none-eabi/lib/thumb/v7e-m
+libc

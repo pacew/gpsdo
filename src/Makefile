@@ -32,7 +32,7 @@ blink.elf: $(BLINK_OBJS) Makefile ldscript
 	$(ARM_PREFIX)-size blink.elf
 
 START_F407_OBJS = vectors.armo start_f407.armo printf.armo
-$(START_F407_OBJS): regs.h
+$(START_F407_OBJS): regs.h gpsdo.h
 start_f407.elf: $(START_F407_OBJS) Makefile ldscript
 	$(ARM_CC) $(ARM_CFLAGS) -o start_f407.elf $(START_F407_OBJS) $(ARM_LIBS)
 	$(ARM_PREFIX)-size start_f407.elf

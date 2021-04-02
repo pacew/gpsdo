@@ -1,11 +1,10 @@
-#include "regs.h"
+#include "gpsdo.h"
 
-#include "printf.h"
 
 int enable_dma;
 
-unsigned char gps_rbuf[1024];
-int gps_rbuf_out_idx;
+unsigned char gps_dmabuf[1024];
+int gps_dmabuf_out_idx;
 
 
 double hclk_hz = 16e6;
@@ -418,6 +417,14 @@ get_tim1_capture (void)
 	return (-1);
 }
 
+void
+gps_process (char *buf)
+{
+	printf ("%s\n", buf);
+}
+
+char gps_buf[200];
+int gps_buf_used;
 
 void
 gps_soak (void)
@@ -430,15 +437,31 @@ gps_soak (void)
 			break;
 		if ((c = gps_getc ()) < 0)
 			break;
-		col++;
-		printf ("%c", c);
-		if (c == '\r')
-			col = 0;
-		if (col >= 100) {
-			col = 0;
-			printf ("\n");
+
+		if (c == '$')
+			gps_buf_used = 0;
+
+		if (c == '\r' || c == '\n') {
+			gps_buf[gps_buf_used] = 0;
+			if (gps_buf[0] == '$')
+				gps_process (gps_buf);
+			gps_buf_used = 0;
+		} else if (gps_buf_used < sizeof gps_buf - 2) {
+			gps_buf[gps_buf_used++] = c;
+			gps_buf[gps_buf_used] = 0;
 		}
-		break;
+
+		if (0) {
+			col++;
+			printf ("%c", c);
+			if (c == '\r')
+				col = 0;
+			if (col >= 100) {
+				col = 0;
+				printf ("\n");
+			}
+			break;
+		}
 	}
 }
 
@@ -446,6 +469,8 @@ gps_soak (void)
 void
 blinker (void)
 {
+	printf ("hello\n");
+
 	delay_speed = 50000;
 
 	/* LED_STATUS PA3 */
@@ -456,7 +481,7 @@ blinker (void)
 
 	systick_setup ();
 
-	//pb11_setup ();
+	pb11_setup ();
 	setup_usart3 ();
 	setup_dma ();
 	setup_tim1 ();
@@ -472,17 +497,17 @@ blinker (void)
 	long long last_tick = 0;
 
 	while (1) {
-		if (systick_secs (last) >= 0.1) {
+		if (systick_secs (last) >= 1) {
 			last = systick_read ();
 			int cap = get_tim1_capture ();
 
 			long long this_tick = get_tim1 ();
-			printf ("tick %15lld %15lld %10d\n", 
+			printf ("**** tick %15lld %15lld %10d *** \n", 
 				this_tick, this_tick - last_tick, cap);
 			last_tick = this_tick;
 		}
 
-		//gps_soak ();
+		gps_soak ();
 	}
 }
 
@@ -683,9 +708,9 @@ setup_dma (void)
 		busywait_ms (1);
 	}
 			     
-	DMA1_S1NDTR = sizeof gps_rbuf;
+	DMA1_S1NDTR = sizeof gps_dmabuf;
 	DMA1_S1PAR = (int)&USART3_DR;
-	DMA1_S1M0AR = (int)gps_rbuf;
+	DMA1_S1M0AR = (int)gps_dmabuf;
 	
 	struct dma_sxcr {
 		unsigned int en : 1;
@@ -735,14 +760,16 @@ gps_getc (void)
 
 		return (USART3_DR & 0xff);
 	} else {
-		int in_idx = (sizeof gps_rbuf - DMA1_S1NDTR) % sizeof gps_rbuf;
+		int in_idx = (sizeof gps_dmabuf - DMA1_S1NDTR) % sizeof gps_dmabuf;
 		
-		if (gps_rbuf_out_idx == in_idx)
+		if (gps_dmabuf_out_idx == in_idx)
 			return (-1);
 		
-		int c = gps_rbuf[gps_rbuf_out_idx];
-		gps_rbuf_out_idx = (gps_rbuf_out_idx + 1) 
-			% sizeof gps_rbuf;
+		int c = gps_dmabuf[gps_dmabuf_out_idx];
+		gps_dmabuf_out_idx = (gps_dmabuf_out_idx + 1) 
+			% sizeof gps_dmabuf;
 		return (c);
 	}
 }
+
+
