@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "regs.h"
 
 #include "printf.h"

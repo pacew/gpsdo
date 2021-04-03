@@ -3,7 +3,8 @@ ARM_PREFIX = arm-none-eabi
 ARM_CC = $(ARM_PREFIX)-gcc
 ARM_OBJDUMP = $(ARM_PREFIX)-objdump
 # was -Os
-ARM_CFLAGS = -g -Wall -I. -I../tinyusb/src -mthumb -mcpu=cortex-m4 \
+ARM_CFLAGS = -g -Wall -nostdinc -I../libje \
+	-I. -I../tinyusb/src -mthumb -mcpu=cortex-m4 \
 	-ffreestanding -nodefaultlibs -nostartfiles -nostdlib \
 	-fstrict-volatile-bitfields \
 	-T ldscript -Wl,--gc-sections,--relax
