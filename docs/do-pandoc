@@ -1,0 +1,9 @@
+#! /bin/sh
+
+pandoc -s \
+       --metadata title=test \
+       -f gfm \
+       --css https://pacew.github.io/gpsdo/assets/css/style.css \
+       -B pandoc-before.html \
+       -A pandoc-after.html
+

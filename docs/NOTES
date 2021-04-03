@@ -1,0 +1,11 @@
+./example.md
+
+https://github.com/jrblevin/markdown-mode
+
+C-c C-c p  preview
+
+C-c C-d    reformat table
+           or jump between reference link and definition)
+
+C-c C-l    insert link
+C-c C-i    insert image
