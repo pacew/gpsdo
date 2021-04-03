@@ -1,6 +1,6 @@
 <!-- -*- mode:gfm -*- -->
  
-![photo of board](v1.jpg)
+![photo of board](docs/v1.jpg)
 
 Documentation: https://pacew.github.io/gpsdo/
 
