@@ -1,4 +1,3 @@
 theme: jekyll-theme-slate
 title: GPS Disciplined Oscillator
 description: An STM32 board with GPS module and Oven Compensated Crystal Oscillator
-show_downloads: true

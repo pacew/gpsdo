@@ -4,14 +4,15 @@
 
 ## data sheets
 
-### processor
+### Processor
 
 * [STM32F407 data sheet](stm32f405rg.pdf)
 * [STM32Fxxx Reference Manual](stm32f4-rm.pdf)
 
-### Generic ARM docs
-* [ARM Cortext M4 Technical Reference Manual
+* Generic ARM docs
+** [ARM Cortext M4 Technical Reference Manual
   ](arm_cortexm4_processor_trm_100166_0001_00_en.pdf)
+
 * [PM0214](cortexm4-pm.pdf) STM32 Cortex-m4 programming manual
 * [ARMv7-M Architecture Reference Manual](DDI0403E_d_armv7m_arm.pdf)
 * [ARM Debug Interface Architecture Specification ADIv5.2](IHI0031C_debug_interface_as.pdf)
