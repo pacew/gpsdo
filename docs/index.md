@@ -1,37 +1,33 @@
+ <!-- -*- mode:gfm -*- -->
+
 ## GPS Disciplined Oscillator
 
-You can use the [editor on GitHub](https://github.com/pacew/gpsdo/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+|foo|bar |
+|:- |:- |
+|AMS1117-3.3 |3.3v voltage regulator | [datasheet](1811201117_Advanced-Monolithic-Systems-AMS-AMS1117-3-3_C6186.pdf) |
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+6000mah_-_lp906090jh_1s1p_2_wire_70mm.pdf
+AOCJY1.pdf
+arm_cortexm4_processor_trm_100166_0001_00_en.pdf
+ATGM336H-5N31_C90770.pdf
+_config.yml
+coresight_v3_0_architecture_specification_IHI0029E.pdf
+cortexm4-pm.pdf
+DDI0316D_dap_lite_trm.pdf
+DDI0403E_d_armv7m_arm.pdf
+drv8801.pdf
+DUI0553A_cortex_m4_dgug.pdf
+example.md
+gps-chip.pdf
+IHI0031C_debug_interface_as.pdf
+IHI0031.pdf
+index.md
+index.md~
+Multimode_satellite_navigation_receiver_cn.pdf
+Murata-Electronics-NCP18WB473J03RB_C86142.pdf
+stm32f405rg.pdf
+stm32f4-rm.pdf
+Sunlord-SDCL1608C47NJTDF_C29683.pdf
+usb-micro-C404969.pdf
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/pacew/gpsdo/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
