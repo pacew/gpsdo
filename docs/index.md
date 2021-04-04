@@ -5,6 +5,7 @@
 ## next rev
 
 * larger size 10uF caps
+* maybe supercap for vbat to gps module?
 
 ## data sheets
 
