@@ -8,7 +8,7 @@ ARM_CFLAGS = -g -Wall -nostdinc -I../libje \
 	-ffreestanding -nodefaultlibs -nostartfiles -nostdlib \
 	-fstrict-volatile-bitfields \
 	-T ldscript -Wl,--gc-sections,--relax
-ARM_LIBS = -lgcc
+ARM_LIBS = ../libje/libje.a -lgcc
 
 .SUFFIXES: .armo
 

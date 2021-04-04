@@ -420,7 +420,8 @@ get_tim1_capture (void)
 void
 gps_process (char *buf)
 {
-	printf ("%s\n", buf);
+	if (strncmp (buf, "$GNGGA", 6) == 0)
+		printf ("%s\n", buf);
 }
 
 char gps_buf[200];
