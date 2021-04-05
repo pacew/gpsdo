@@ -130,22 +130,9 @@ setup_swo (void)
 	/* Chapter DBG Section ITM */
 	/* Configure the TPIU and assign TRACE I/Os by configuring the
 	   DBGMCU_CR (refer to Section 38.17.2 and Section 38.16.3) */
-	union {
-		struct {
-			int dbg_sleep : 1;
-			int dbg_stop : 1;
-			int dbg_standby : 1;
-			int : 2;
-			int trace_ioen : 1;
-			int trace_mode : 2;
-		} bits;
-		unsigned int word;
-	} dbg_dbgmcu_cr;
 			
-	dbg_dbgmcu_cr.word = DBG_DBGMCU_CR;
-	dbg_dbgmcu_cr.bits.trace_ioen = 1;
-	dbg_dbgmcu_cr.bits.trace_mode = 0; // async trace traceswo pb3
-	DBG_DBGMCU_CR = dbg_dbgmcu_cr.word;
+	dbg_dbgmcu_cr->trace_ioen = 1;
+	dbg_dbgmcu_cr->trace_mode = 0; // async trace traceswo pb3
 		
 	small_delay();
 
@@ -255,104 +242,18 @@ small_delay()
 void
 pb11_setup (void)
 {
-	RCC_AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
+	rcc_ahb1enr->gpioben = 1;
+	small_delay ();
 }
 
-
-int
-pb11_read (void)
-{
-	return (0);
-}
 
 void setup_dma (void);
 
 void
 setup_tim1 (void)
 {
-	struct {
-		unsigned int cen : 1;
-		unsigned int udis : 1;
-		unsigned int urs : 1;
-		unsigned int opm : 1;
-		unsigned int dir : 1;
-		unsigned int cms : 2;
-		unsigned int arpe : 1;
-		unsigned int ckd : 2;
-		unsigned int : 6;
-	} volatile *tim1_cr1 = (void *)&TIM1_CR1;
-
-	struct {
-		unsigned int ccpc : 1;
-		unsigned int : 1;
-		unsigned int ccus : 1;
-		unsigned int ccds : 1;
-		unsigned int mms : 3;
-		unsigned int ti1s : 1;
-		unsigned int ois1 : 1;
-		unsigned int ois1n : 1;
-		unsigned int ois2 : 1;
-		unsigned int ois2n : 1;
-		unsigned int ois3 : 1;
-		unsigned int ois3n : 1;
-		unsigned int ois4 : 1;
-		unsigned int : 1;
-	} volatile *tim1_cr2 = (void *)&TIM1_CR2;
-		
-
-	struct {
-		unsigned int cc1s : 2;
-		unsigned int ic1psc : 2;
-		unsigned int ic1f : 4;
-		unsigned int cc2s : 2;
-		unsigned int ic2psc : 2;
-		unsigned int ic2f : 4;
-	} volatile *tim1_ccmr1_input = (void *)&TIM1_CCMR1_Input;
-	
-	struct {
-		unsigned int cc1e : 1;
-		unsigned int cc1p : 1;
-		unsigned int cc1ne : 1;
-		unsigned int cc1np : 1;
-		unsigned int cc2e : 1;
-		unsigned int cc2p : 1;
-		unsigned int cc2ne : 1;
-		unsigned int cc2np : 1;
-		unsigned int cc3e : 1;
-		unsigned int cc3p : 1;
-		unsigned int cc3ne : 1;
-		unsigned int cc3np : 1;
-		unsigned int cc4e : 1;
-		unsigned int cc4p : 1;
-		unsigned int : 1;
-		unsigned int cc4np : 1;
-	} volatile *tim1_ccer = (void *)&TIM1_CCER;
-
-	struct {
-		unsigned int cen : 1;
-		unsigned int udis : 1;
-		unsigned int urs : 1;
-		unsigned int opm : 1;
-		unsigned int dir : 1;
-		unsigned int cms : 2;
-		unsigned int arpe : 1;
-		unsigned int ckd : 2;
-		unsigned int : 6;
-	} volatile *tim2_cr1 = (void *)&TIM2_CR1;
-
-	struct {
-		unsigned int sms : 3;
-		unsigned int : 1;
-		unsigned int ts : 3;
-		unsigned int msm : 1;
-		unsigned int etf : 4;
-		unsigned int etps : 2;
-		unsigned int ece : 14;
-		unsigned int etp : 15;
-	} volatile *tim2_smcr = (void *)&TIM2_SMCR;
-
-	RCC_APB2ENR |= RCC_APB2ENR_TIM1EN;
-	RCC_APB1ENR |= RCC_APB1ENR_TIM2EN;
+	rcc_apb2enr->tim1en = 1;
+	rcc_apb1enr->tim2en = 1;
 	small_delay ();
 
 	if (1) {
@@ -366,13 +267,6 @@ setup_tim1 (void)
 
 	tim1_cr1->cen = 1;
 	tim2_cr1->cen = 1;
-
-	if (0) {
-		unsigned int volatile *reg = &TIM1_CR1;
-		for (int i = 0; i < 18; i++) {
-			printf ("%p 0x%x\n", &reg[i], reg[i]);
-		}
-	}
 }
 
 long long
@@ -382,9 +276,9 @@ get_tim1 (void)
 	long long t2;
 
 	while (1) {
-		t1 = TIM1_CNT;
-		t2 = TIM2_CNT;
-		t1a = TIM1_CNT;
+		t1 = tim1_cnt->cnt;
+		t2 = *(int *)tim2_cnt;
+		t1a = tim1_cnt->cnt;
 		if (t1 <= t1a)
 			break;
 	}
@@ -394,25 +288,8 @@ get_tim1 (void)
 int
 get_tim1_capture (void)
 {
-	struct {
-		unsigned int uif : 1;
-		unsigned int cc1if : 1;
-		unsigned int cc2if : 1;
-		unsigned int cc3if : 1;
-		unsigned int cc4if : 1;
-		unsigned int comif : 1;
-		unsigned int tif : 1;
-		unsigned int bif : 1;
-		unsigned int : 1;
-		unsigned int cc1of : 1;
-		unsigned int cc2of : 1;
-		unsigned int cc3of : 1;
-		unsigned int cc4of : 1;
-		unsigned int : 3;
-	} volatile *tim1_sr = (void *)&TIM1_SR;
-
 	if (tim1_sr->cc1if)
-		return (TIM1_CCR1);
+		return (tim1_ccr1->ccr1);
 
 	return (-1);
 }
@@ -475,10 +352,9 @@ blinker (void)
 	delay_speed = 50000;
 
 	/* LED_STATUS PA3 */
-	RCC_AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+	rcc_ahb1enr->gpioaen = 1;
 	small_delay ();
-
-	GPIOA_MODER = (GPIOA_MODER & ~0xc0) | 0x40; // output
+	gpioa_moder->moder3 = 1; // output
 
 	systick_setup ();
 
@@ -488,9 +364,9 @@ blinker (void)
 	setup_tim1 ();
 
 	if (1) {
-		GPIOB_MODER = (GPIOB_MODER & ~3) | 1; // output
-		GPIOB_BSRR = (1 << 0);
-		//GPIOB_BSRR = (1 << (0+16));
+		/* PB0 gps onoff */
+		gpiob_moder->moder0 = 1; // output
+		gpiob_bsrr->bs0 = 1;
 	}
 
 
@@ -562,94 +438,73 @@ intr_unhandled (void)
 void
 setup_clock (void)
 {
-	union {
-		struct {
-			/* TODO cache bits */
-			int latency : 3;
-		} bits;
-		unsigned int word;
-	} flash;
-	flash.word = FLASH_ACR;
-	flash.bits.latency = 5; // 5 wait states
-	FLASH_ACR = flash.word;
-
-	union {
-		struct rcc_cfgr {
-			unsigned int sw : 2;
-			unsigned int sws : 2;
-			unsigned int hpre : 4;
-			unsigned int ppre1 : 3;
-			unsigned int ppre2 : 3;
-			unsigned int rtcpre : 5;
-			unsigned int mco1 : 2;
-			unsigned int i2ssrc : 1;
-			unsigned int mco1pre : 3;
-			unsigned int mco2pre : 3;
-			unsigned int mco2 : 2;
-		} bits;
-		unsigned int word;
-	} rcc_cfgr;
-	rcc_cfgr.word = RCC_CFGR;
-	rcc_cfgr.bits.ppre2 = 4; // APB2: code 4 mean divide by 2
-	rcc_cfgr.bits.ppre1 = 5; // APB1: code 5 means divide by 4
-	rcc_cfgr.bits.hpre = 0; // AHB prescaler: 0 means not divided
-	RCC_CFGR = rcc_cfgr.word;
+	// TODO cache bits
+	flash_acr->latency = 5; // 5 wait states
 	
-	union {
-		struct {
-			unsigned int : 16;
-			unsigned int adcpre : 2;
-		} bits;
-		unsigned int word;
-	} c_adc_ccr;
-	c_adc_ccr.word = C_ADC_CCR;
-	c_adc_ccr.bits.adcpre = 1; // code 1 = divide by 4: adc clk = 84/4=21
-	C_ADC_CCR = c_adc_ccr.word;
+	rcc_cfgr->ppre2 = 4; // APB2: code 4 mean divide by 2
+	rcc_cfgr->ppre1 = 5; // APB1: code 5 means divide by 4
+	rcc_cfgr->hpre = 0; // AHB prescaler: 0 means not divided
+	
+	c_adc_ccr->adcpre = 1; // code 1 = divide by 4: adc clk = 84/4=21
 
+	rcc_pllcfgr->pllsrc = 1; // select HSE clock
+	int m = 8; // code 8 means divide by 8
+	rcc_pllcfgr->pllm0 = (m & 0x01) ? 1 : 0;
+	rcc_pllcfgr->pllm1 = (m & 0x02) ? 1 : 0;
+	rcc_pllcfgr->pllm2 = (m & 0x04) ? 1 : 0;
+	rcc_pllcfgr->pllm3 = (m & 0x08) ? 1 : 0;
+	rcc_pllcfgr->pllm4 = (m & 0x10) ? 1 : 0;
+	rcc_pllcfgr->pllm5 = (m & 0x20) ? 1 : 0;
 
-	union {
-		struct {
-			unsigned int m : 6;
-			unsigned int n : 9;
-			unsigned int : 1;
-			unsigned int p : 2;
-			unsigned int : 4;
-			unsigned int src : 1;
-			unsigned int q : 4;
-			unsigned int : 4;
-		} bits;
-		unsigned int word;
-	} pllcfgr;
-	pllcfgr.word = RCC_PLLCFGR;
-	pllcfgr.bits.src = 1; // select HSE clock
-	pllcfgr.bits.m = 8; // code 8 means divide by 8
-	pllcfgr.bits.n = 168; // code 168 means times 168
-	pllcfgr.bits.p = 0; // code 0 means divide by 2
-	pllcfgr.bits.q = 7; // code 7 means divide by 7
-	RCC_PLLCFGR = pllcfgr.word;
+	int n = 168; // code 168 means times 168
+	rcc_pllcfgr->plln0 = (n & 0x001) ? 1 : 0;
+	rcc_pllcfgr->plln1 = (n & 0x002) ? 1 : 0;
+	rcc_pllcfgr->plln2 = (n & 0x004) ? 1 : 0;
+	rcc_pllcfgr->plln3 = (n & 0x008) ? 1 : 0;
+	rcc_pllcfgr->plln4 = (n & 0x010) ? 1 : 0;
+	rcc_pllcfgr->plln5 = (n & 0x020) ? 1 : 0;
+	rcc_pllcfgr->plln6 = (n & 0x040) ? 1 : 0;
+	rcc_pllcfgr->plln7 = (n & 0x080) ? 1 : 0;
+	rcc_pllcfgr->plln8 = (n & 0x100) ? 1 : 0;
 
+	int p = 0; // code 0 means divide by 2
+	rcc_pllcfgr->pllp0 = (p & 0) ? 1 : 0;
+	rcc_pllcfgr->pllp1 = (p & 1) ? 1 : 0;
+
+	int q = 7; // code 7 means divide by 7
+	rcc_pllcfgr->pllq0 = (q & 0x1) ? 1 : 0;
+	rcc_pllcfgr->pllq1 = (q & 0x2) ? 1 : 0;
+	rcc_pllcfgr->pllq2 = (q & 0x4) ? 1 : 0;
+	rcc_pllcfgr->pllq3 = (q & 0x8) ? 1 : 0;
 
 	/* run long enough for all the prescalers to cycle */
 	busywait_ticks (1000);
 
 	/* turn on external oscillator, await ready */
-	RCC_CR |= RCC_CR_HSEON;
-	while ((RCC_CR & RCC_CR_HSERDY) == 0)
+	rcc_cr->hseon = 1;
+	while (rcc_cr->hserdy == 0)
 		;
 
 	/* turn on pll, await ready */
-	RCC_CR |= RCC_CR_PLLON;
-	while ((RCC_CR & RCC_CR_PLLRDY) == 0)
+	rcc_cr->pllon = 1;
+	while (rcc_cr->pllrdy == 0)
 		;
 
 	/* switch to pll */
-	rcc_cfgr.bits.sw = 2;
-	RCC_CFGR = rcc_cfgr.word;
+	
+	struct s_rcc_cfgr cfgr = *rcc_cfgr;
+	int sw = 2;
+	cfgr.sw0 = (sw & 0x1) ? 1 : 0;
+	cfgr.sw1 = (sw & 0x2) ? 1 : 0;
+	*rcc_cfgr = cfgr;
 
 	/* wait for switch to happen */
 	while (1) {
-		rcc_cfgr.word = RCC_CFGR;
-		if (rcc_cfgr.bits.sws == 2)
+		cfgr = *rcc_cfgr;
+		int sws = 0;
+		if (cfgr.sw0) sws |= 1;
+		if (cfgr.sw1) sws |= 2;
+		if (sws == 2)
 			break;
 	}
 
@@ -674,29 +529,24 @@ setup_usart3 (void)
 	float clock = hclk_hz;
 
 	// enable devices
-	RCC_APB1ENR |= RCC_APB1ENR_USART3EN;
-	RCC_AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
+	rcc_apb1enr->usart3en = 1;
+	rcc_ahb1enr->gpioben = 1;
 	busywait_ticks (1);
 
-	printf ("before %x\n", GPIOB_MODER);
-	GPIOB_MODER |= 2<<(10*2); // alternate func for PB10
-	GPIOB_MODER |= 2<<(11*2); // alternate func for PB11
+	gpiob_moder->moder10 = 2; // alternate func for PB10
+	gpiob_moder->moder11 = 2; // alternate func for PB11
 
-	GPIOB_AFRH |= 7<<((10-8)*4); // PB10 alternate 7
-	GPIOB_AFRH |= 7<<((11-8)*4); // PB11 alternate 7
+	gpiob_afrh->afrh10 = 7; // PB10 alternate 7
+	gpiob_afrh->afrh11 = 7; // PB11 alternate 7
 
-	USART3_BRR = clock / 9600;
+	int div = clock / 9600;
+	usart3_brr->div_mantissa = (div >> 4);
+	usart3_brr->div_fraction = div & 4;
 
-	USART3_CR1 |= USART_CR1_UE; // USART Enable
+	usart3_cr1->ue = 1; // USART Enable
 	busywait_ticks (1);
-	USART3_CR1 |= USART_CR1_TE | USART_CR1_RE; // xmit & rcv enable
-
-	printf ("RCC_APB1ENR %x\n", RCC_APB1ENR);
-	printf ("GPIOB_MODER %x\n", GPIOB_MODER);
-	printf ("GPIOB_AFRH %x\n", GPIOB_AFRH);
-	printf ("USART3_BRR %x\n", USART3_BRR);
-	printf ("USART3_CR1 %x\n", USART3_CR1);
-
+	usart3_cr1->te = 1; // xmit enable
+	usart3_cr1->re = 1; // rcv enable
 }
 
 void
@@ -704,50 +554,24 @@ setup_dma (void)
 {
 	enable_dma = 1;
 	
-	if ((RCC_AHB1ENR & RCC_AHB1ENR_DMA1EN) == 0) {
-		RCC_AHB1ENR |= RCC_AHB1ENR_DMA1EN;
+	if ((rcc_ahb1enr->dma1en) == 0) {
+		rcc_ahb1enr->dma1en = 1;
 		busywait_ms (1);
 	}
 			     
-	DMA1_S1NDTR = sizeof gps_dmabuf;
-	DMA1_S1PAR = (int)&USART3_DR;
-	DMA1_S1M0AR = (int)gps_dmabuf;
+	dma1_s1ndtr->ndt = sizeof gps_dmabuf;
+	dma1_s1par->pa = (int)usart3_dr;
+	dma1_s1m0ar->m0a = (int)gps_dmabuf;
 	
-	struct dma_sxcr {
-		unsigned int en : 1;
-		unsigned int dmeie : 1;
-		unsigned int teie : 1;
-		unsigned int htie : 1;
-		unsigned int tcie : 1;
-		unsigned int pfctrl : 1;
-		unsigned int dir : 2;
-		unsigned int circ : 1;
-		unsigned int pinc : 1;
-		unsigned int minc : 1;
-		unsigned int psize : 2;
-		unsigned int msize : 2;
-		unsigned int pincos : 1;
-		unsigned int pl : 2;
-		unsigned int dbm : 1;
-		unsigned int ct : 1;
-		unsigned int : 1;
-		unsigned int pburst : 2;
-		unsigned int mburst : 2;
-		unsigned int chsel : 3;
-		unsigned int : 4;
-	} volatile *s1cr = (void *)&DMA1_S1CR;
-	printf ("s1cr before %x\n", DMA1_S1CR);
-	s1cr->chsel = 4;
-	s1cr->minc = 1;
-	s1cr->pinc = 0;
-	s1cr->circ = 1;
-	s1cr->dir = 0;
-	printf ("s1cr after %x\n", DMA1_S1CR);
-
+	dma1_s1cr->chsel = 4;
+	dma1_s1cr->minc = 1;
+	dma1_s1cr->pinc = 0;
+	dma1_s1cr->circ = 1;
+	dma1_s1cr->dir = 0;
 	
-	USART3_CR3 |= USART_CR3_DMAR;
+	usart3_cr3->dmar = 1;
 
-	s1cr->en = 1;
+	dma1_s1cr->en = 1;
 
 }
 	  
@@ -756,12 +580,13 @@ int
 gps_getc (void)
 {
 	if (enable_dma == 0) {
-		if ((USART3_SR & USART_SR_RXNE) == 0)
+		if ((usart3_sr->rxne) == 0)
 			return (-1);
 
-		return (USART3_DR & 0xff);
+		return (usart3_dr->dr & 0xff);
 	} else {
-		int in_idx = (sizeof gps_dmabuf - DMA1_S1NDTR) % sizeof gps_dmabuf;
+		int in_idx = (sizeof gps_dmabuf - dma1_s1ndtr->ndt)
+			% sizeof gps_dmabuf;
 		
 		if (gps_dmabuf_out_idx == in_idx)
 			return (-1);
